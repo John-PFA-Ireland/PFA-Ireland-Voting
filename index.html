@@ -984,8 +984,9 @@ async function submitVote() {
     try {
       await fetch(POWER_AUTOMATE_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(payload),
+        mode: 'no-cors'
       });
     } catch (err) {
       console.error('Submission error:', err);
