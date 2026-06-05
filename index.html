@@ -297,11 +297,7 @@ textarea { resize: vertical; min-height: 80px; }
           <input type="email" id="email" placeholder="e.g. conor@example.com">
           <div class="error-msg" id="err_email">Please enter a valid email address.</div>
         </div>
-        <div class="field-group">
-          <label>Phone Number</label>
-          <input type="tel" id="phone" placeholder="e.g. 087 123 4567">
-          <div class="error-msg" id="err_phone">Required.</div>
-        </div>
+       
         <div class="nav-buttons">
           <button class="btn btn-secondary" onclick="goStep(1)">← Back</button>
           <button class="btn btn-primary" onclick="goStep(3)">Continue →</button>
@@ -550,7 +546,7 @@ function validateStep(step) {
   }
   if (step === 2) {
     let ok = true;
-    [['firstName',true],['lastName',true],['email','email'],['phone',true]].forEach(([id, rule]) => {
+    [['firstName',true],['lastName',true],['email','email']].forEach(([id, rule]) => {
       const val = fv(id);
       const valid = rule === 'email' ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) : !!val;
       showErr(id, !valid); if (!valid) ok = false;
@@ -945,7 +941,6 @@ async function submitVote() {
     voter_first_name:  fv('firstName'),
     voter_last_name:   fv('lastName'),
     voter_email:       fv('email'),
-    voter_phone:       fv('phone'),
     voter_club:        state.voterClub,
     goalkeeper:        state.votes['gk']?.display_name   || '',
     goalkeeper_club:   state.votes['gk']?.club           || '',
