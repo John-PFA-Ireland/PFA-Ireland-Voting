@@ -271,7 +271,11 @@ textarea { resize: vertical; min-height: 80px; }
             <h3>Men's First Division</h3><p>10 clubs</p>
           </div>
         </div>
-        <div class="field-group" id="voterClubField" style="display:none">
+        <div style="background:#fff3cd;border:1px solid #ffc107;border-left:4px solid #e6a817;border-radius:7px;padding:12px 16px;font-size:13px;color:#5a4000;line-height:1.6;margin-bottom:16px;">
+          ⚠️ <strong>Please note:</strong> Only First-Team players are permitted to vote and each player may only vote once.
+        </div>
+
+        <div class="field-group" id="voterClubField" style="display:none">          
           <label>Your Club</label>
           <select id="voterClub" onchange="onVoterClubChange()">
             <option value="">— Select your club —</option>
