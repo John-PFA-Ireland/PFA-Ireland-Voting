@@ -190,7 +190,7 @@ code{background:var(--grey-light);padding:1px 6px;border-radius:4px;font-family:
 //  Paste your Make webhook URL below once set up.
 //  Leave empty to see the setup instructions.
 // ================================================================
-const RESULTS_URL = '';
+const RESULTS_URL = 'https://hook.eu1.make.com/e9o356erppnwd9t1ihyfgye5qbbqup88';
 
 // Weight for mid-season votes
 const MID_SEASON_WEIGHT = 0.5;
@@ -250,18 +250,108 @@ async function fetchData() {
 
   try {
     setStatus('Fetching latest results...', true);
-    const res = await fetch(RESULTS_URL);
+    const res = await fetch(RESULTS_URL, { method: 'GET', mode: 'cors' });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
+    const text = await res.text();
+    console.log('Raw Make response text:', text.substring(0, 500));
+
+    // Make returns multiple rows as newline-delimited JSON objects
+    // Each row is a separate JSON object on its own line
+    let votes = [];
+    const lines = text.trim().split('\n').filter(l => l.trim());
+
+    if (lines.length > 1) {
+      // Multiple lines — each is a separate JSON row object
+      lines.forEach(line => {
+        try {
+          const row = JSON.parse(line.trim());
+          votes.push(normaliseRow(row));
+        } catch(e) { /* skip malformed lines */ }
+      });
+    } else {
+      // Single object or array
+      const raw = JSON.parse(text);
+      if (Array.isArray(raw)) {
+        votes = raw.map(normaliseRow);
+      } else if (raw && Array.isArray(raw.votes)) {
+        votes = raw.votes.map(normaliseRow);
+      } else if (raw && typeof raw === 'object' && raw.values) {
+        // Single row returned
+        votes = [normaliseRow(raw)];
+      } else if (raw && typeof raw === 'object') {
+        const arrays = Object.values(raw).filter(v => Array.isArray(v));
+        if (arrays.length > 0) votes = arrays[0].map(normaliseRow);
+      }
+    }
+
+    const data = {
+      premier_division: { votes: votes.filter(v => v.division === 'Premier Division') },
+      first_division:   { votes: votes.filter(v => v.division === 'First Division') }
+    };
+
     lastData = data;
     renderAll(data);
-    setStatus(`Last updated: ${new Date().toLocaleTimeString('en-IE')}`, true);
+    setStatus(`Last updated: ${new Date().toLocaleTimeString('en-IE')} · ${votes.length} votes loaded`, true);
+    console.log('Raw Make response:', raw);
+    console.log('Parsed votes:', votes.length, votes[0]);
   } catch(err) {
     setStatus(`Connection error: ${err.message} — showing last known data`, false);
+    console.error('Fetch error:', err);
     if (lastData) renderAll(lastData);
   }
 
   startCountdown();
+}
+
+// Column index map — matches exact order from Excel Responses table
+// 0=Timestamp, 1=Division, 2=FirstName, 3=LastName, 4=Email, 5=Phone, 6=Club,
+// 7=Goalkeeper, 8=GK Club, 9=Defender1, 10=Def1Club, 11=Defender2, 12=Def2Club,
+// 13=Defender3, 14=Def3Club, 15=Defender4, 16=Def4Club,
+// 17=Midfielder1, 18=Mid1Club, 19=Midfielder2, 20=Mid2Club, 21=Midfielder3, 22=Mid3Club,
+// 23=Attacker1, 24=Att1Club, 25=Attacker2, 26=Att2Club, 27=Attacker3, 28=Att3Club,
+// 29=Education, 30=EducationOther, 31=LastEducation, 32=BizSchool, 33=BizSchoolOther,
+// 34=Contract, 35=WorkforceReady, 36=PFAHelp, 37=Comments
+const COL = {
+  timestamp:        0,
+  division:         1,
+  voter_first_name: 2,
+  voter_last_name:  3,
+  voter_email:      4,
+  voter_phone:      5,
+  voter_club:       6,
+  goalkeeper:       7,
+  goalkeeper_club:  8,
+  defender_1:       9,
+  defender_1_club:  10,
+  defender_2:       11,
+  defender_2_club:  12,
+  defender_3:       13,
+  defender_3_club:  14,
+  defender_4:       15,
+  defender_4_club:  16,
+  midfielder_1:     17,
+  midfielder_1_club:18,
+  midfielder_2:     19,
+  midfielder_2_club:20,
+  midfielder_3:     21,
+  midfielder_3_club:22,
+  attacker_1:       23,
+  attacker_1_club:  24,
+  attacker_2:       25,
+  attacker_2_club:  26,
+  attacker_3:       27,
+  attacker_3_club:  28,
+};
+
+function normaliseRow(row) {
+  if (!row) return {};
+  // Make returns rows with numeric string keys in a "values" object
+  const vals = row.values || row;
+  const out = {};
+  Object.entries(COL).forEach(([key, idx]) => {
+    out[key] = (vals[String(idx)] || vals[idx] || '').toString().trim();
+  });
+  return out;
 }
 
 function setStatus(msg, ok) {
