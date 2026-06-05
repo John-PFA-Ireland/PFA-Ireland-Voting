@@ -318,7 +318,7 @@ const FD_CLUBS = ['Athlone Town','Bray Wanderers','Cobh Ramblers','Cork City','F
 let currentTab = 'premier';
 let lastData = null;
 let refreshTimer = null;
-let countdown = 60;
+let countdown = 300;
 
 // ================================================================
 //  TAB SWITCHING
@@ -337,7 +337,7 @@ function switchTab(tab) {
 //  REFRESH COUNTDOWN
 // ================================================================
 function startCountdown() {
-  countdown = 60;
+  countdown = 300;
   clearInterval(refreshTimer);
   refreshTimer = setInterval(() => {
     countdown--;
