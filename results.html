@@ -146,7 +146,7 @@ code{background:var(--grey-light);padding:1px 6px;border-radius:4px;font-family:
   </div>
   <div class="refresh-info">
     <span id="nextRefresh">—</span>
-    Auto-refresh every 60s
+    Auto-refresh every 5 mins
   </div>
 </header>
 
@@ -205,7 +205,7 @@ const FD_CLUBS = ['Athlone Town','Bray Wanderers','Cobh Ramblers','Cork City','F
 let currentTab = 'premier';
 let lastData = null;
 let refreshTimer = null;
-let countdown = 60;
+let countdown = 300;
 
 // ================================================================
 //  TAB SWITCHING
@@ -224,13 +224,18 @@ function switchTab(tab) {
 //  REFRESH COUNTDOWN
 // ================================================================
 function startCountdown() {
-  countdown = 60;
+  countdown = 300;
   clearInterval(refreshTimer);
   refreshTimer = setInterval(() => {
     countdown--;
     document.getElementById('nextRefresh').textContent = `Refreshing in ${countdown}s`;
     if (countdown <= 0) {
-      fetchData();
+      // Only fetch if page is visible
+      if (!document.hidden) {
+        fetchData();
+      } else {
+        countdown = 300;
+      }
     }
   }, 1000);
 }
