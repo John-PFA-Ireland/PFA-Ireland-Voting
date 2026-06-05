@@ -253,34 +253,42 @@ async function fetchData() {
     const res = await fetch(RESULTS_URL, { method: 'GET', mode: 'cors' });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const text = await res.text();
-    console.log('Raw Make response text:', text.substring(0, 500));
+    console.log('Raw Make response text (first 500):', text.substring(0, 500));
 
     // Make returns multiple rows as newline-delimited JSON objects
-    // Each row is a separate JSON object on its own line
     let votes = [];
-    const lines = text.trim().split('\n').filter(l => l.trim());
+    const lines = text.trim().split('\n').filter(l => l.trim().startsWith('{'));
 
-    if (lines.length > 1) {
-      // Multiple lines — each is a separate JSON row object
+    if (lines.length >= 1) {
+      // Each line is a separate JSON row object from Make
       lines.forEach(line => {
         try {
           const row = JSON.parse(line.trim());
-          votes.push(normaliseRow(row));
-        } catch(e) { /* skip malformed lines */ }
+          // Skip header/metadata rows — valid vote rows have a division value
+          const norm = normaliseRow(row);
+          if (norm.division && (norm.division.includes('Division') || norm.division.includes('division'))) {
+            votes.push(norm);
+          } else if (row.values && row.values['1'] && String(row.values['1']).includes('Division')) {
+            votes.push(normaliseRow(row));
+          }
+        } catch(e) { console.warn('Skipped line:', line.substring(0,50), e.message); }
       });
     } else {
       // Single object or array
-      const raw = JSON.parse(text);
-      if (Array.isArray(raw)) {
-        votes = raw.map(normaliseRow);
-      } else if (raw && Array.isArray(raw.votes)) {
-        votes = raw.votes.map(normaliseRow);
-      } else if (raw && typeof raw === 'object' && raw.values) {
-        // Single row returned
-        votes = [normaliseRow(raw)];
-      } else if (raw && typeof raw === 'object') {
-        const arrays = Object.values(raw).filter(v => Array.isArray(v));
-        if (arrays.length > 0) votes = arrays[0].map(normaliseRow);
+      try {
+        const parsed = JSON.parse(text);
+        if (Array.isArray(parsed)) {
+          votes = parsed.map(normaliseRow);
+        } else if (parsed && Array.isArray(parsed.votes)) {
+          votes = parsed.votes.map(normaliseRow);
+        } else if (parsed && typeof parsed === 'object' && parsed.values) {
+          votes = [normaliseRow(parsed)];
+        } else if (parsed && typeof parsed === 'object') {
+          const arrays = Object.values(parsed).filter(v => Array.isArray(v));
+          if (arrays.length > 0) votes = arrays[0].map(normaliseRow);
+        }
+      } catch(e) {
+        console.error('JSON parse error:', e);
       }
     }
 
