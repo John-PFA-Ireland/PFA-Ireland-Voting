@@ -255,8 +255,19 @@ textarea { resize: vertical; min-height: 80px; }
   <div class="progress-label" id="progressLabel">Step 1 of 5</div>
 </div>
 
-<div class="container">
+<!-- VOTING CLOSED PAGE -->
+<div id="votingClosedPage" style="display:none;" class="voting-closed">
+  <div class="voting-closed-card">
+    <img src="pfa-ireland-logo.png" alt="PFA Ireland">
+    <div class="closed-icon">🔒</div>
+    <h2>Voting Closed</h2>
+    <p>Voting is currently closed.</p>
+    <p>If you believe you are seeing this message in error, please contact your club delegate or <a href="mailto:john@pfai.ie">john@pfai.ie</a></p>
+  </div>
+</div>
 
+<div class="container">
+  
   <!-- STEP 1: Division & Club -->
   <div class="step active" id="step1">
     <div class="card">
@@ -478,6 +489,18 @@ document.addEventListener('keydown', function(e) {
 });
 
 // ================================================================
+//  VOTING OPEN/CLOSED CHECK
+// ================================================================
+if (!VOTING_OPEN) {
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('header').style.display = 'none';
+    document.querySelector('.progress-bar-wrap').style.display = 'none';
+    document.querySelector('.container').style.display = 'none';
+    document.getElementById('votingClosedPage').style.display = 'flex';
+  });
+}
+
+// ================================================================
 //  PLAYER DATA — sourced directly from pivot tables in
 //  260604_LOI_Player_Apperance_Data.xlsx (500+ minutes played)
 //
@@ -513,6 +536,13 @@ const PD_PLAYERS = [{"display_name": "Edwin Agbaje", "club": "Drogheda United", 
 //  Power Automate HTTP trigger URL below.
 //  Leave as empty string '' to disable (responses log to console only).
 // ================================================================
+// ================================================================ 
+//  VOTING CONTROL 
+//  Set VOTING_OPEN to false to close voting and show the closed page. 
+//  Set back to true to reopen voting. 
+// ================================================================ 
+const VOTING_OPEN = true;  
+  
 const POWER_AUTOMATE_URL = 'https://hook.eu1.make.com/d1yvhdrsfyh9qqb8ud9d8xsoe748ln19';
 
 // ================================================================
@@ -660,7 +690,63 @@ function buildVotingUI() {
   const wrap = document.getElementById('votingContent');
   wrap.innerHTML = '';
 
-  // Eligibility notice
+  /* VOTING CLOSED SCREEN */
+.voting-closed {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: var(--off-white);
+}
+.voting-closed-card {
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 48px 36px;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+}
+.voting-closed-card img {
+  height: 60px;
+  width: auto;
+  margin-bottom: 24px;
+}
+.voting-closed-card h2 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  letter-spacing: 2px;
+  color: var(--green-dark);
+  margin-bottom: 16px;
+}
+.voting-closed-card p {
+  font-size: 15px;
+  color: var(--text-light);
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+.voting-closed-card a {
+  color: var(--green);
+  text-decoration: none;
+  font-weight: 500;
+}
+.voting-closed-card a:hover {
+  text-decoration: underline;
+}
+.closed-icon {
+  width: 64px;
+  height: 64px;
+  background: var(--grey-light);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 28px;
+}
+
+/* ELIGIBILITY NOTICE */
   const notice = document.createElement('div');
   notice.className = 'eligibility-notice';
   notice.innerHTML = '<strong>ℹ️ Player Eligibility:</strong> Players appear on the lists on this form once they had played a minimum of 500 minutes by 31/05/26 during the 2026 League of Ireland season. Where a player does not appear, an option is available to add their name manually.';
