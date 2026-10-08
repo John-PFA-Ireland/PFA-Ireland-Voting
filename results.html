@@ -266,7 +266,7 @@ code{background:var(--grey-light);padding:1px 6px;border-radius:4px;font-family:
 <div class="tabs">
   <div class="tab active" onclick="switchTab('premier')">Premier Division</div>
   <div class="tab" onclick="switchTab('first')">First Division</div>
-  <div class="tab" onclick="switchTab('womens')" id="womensTab" style="display:none">Women's Premier</div>
+  <div class="tab" onclick="switchTab('womens')" id="womensTab">Women's Premier</div>
 </div>
 
 <div class="container">
@@ -292,7 +292,7 @@ code{background:var(--grey-light);padding:1px 6px;border-radius:4px;font-family:
 
   <!-- WOMENS (future) -->
   <div class="div-section" id="tab-womens">
-    <div class="empty-state">Women's Premier Division voting opens for the End-of-Season vote later in 2026.</div>
+    <div id="wpd-content"></div>
   </div>
 
 </div>
@@ -303,14 +303,21 @@ code{background:var(--grey-light);padding:1px 6px;border-radius:4px;font-family:
 //  Paste your Make webhook URL below once set up.
 //  Leave empty to see the setup instructions.
 // ================================================================
+// Mid-season results webhook (existing)
 const RESULTS_URL = 'https://hook.eu1.make.com/e9o356erppnwd9t1ihyfgye5qbbqup88';
 
-// Weight for mid-season votes
+// End-of-season results webhook — paste URL here once Make.com scenario is set up
+// One URL that returns ALL three EOS divisions (or leave empty to show mid-season data only)
+const EOS_RESULTS_URL = 'PASTE_EOS_RESULTS_WEBHOOK_HERE';
+
+// Vote weights
 const MID_SEASON_WEIGHT = 0.5;
+const END_SEASON_WEIGHT = 1.0;
 
 // Division clubs (for turnout table ordering)
-const PD_CLUBS = ['Bohemians','Derry City','Drogheda United','Dundalk','Galway United','Shamrock Rovers','Shelbourne','Sligo Rovers',"St. Patrick's Athletic",'Waterford'];
-const FD_CLUBS = ['Athlone Town','Bray Wanderers','Cobh Ramblers','Cork City','Finn Harps','Kerry','Longford Town','Treaty United','UCD','Wexford'];
+const PD_CLUBS  = ['Bohemians','Derry City','Drogheda United','Dundalk','Galway United','Shamrock Rovers','Shelbourne','Sligo Rovers',"St. Patrick's Athletic",'Waterford'];
+const FD_CLUBS  = ['Athlone Town','Bray Wanderers','Cobh Ramblers','Cork City','Finn Harps','Kerry','Longford Town','Treaty United','UCD','Wexford'];
+const WPD_CLUBS = ['Athlone Town','Bohemians','Cork City','DLR Waves','Galway United','Peamount United','Shamrock Rovers','Shelbourne','Sligo Rovers','Treaty United','Waterford','Wexford'];
 
 // ================================================================
 //  STATE
@@ -318,7 +325,7 @@ const FD_CLUBS = ['Athlone Town','Bray Wanderers','Cobh Ramblers','Cork City','F
 let currentTab = 'premier';
 let lastData = null;
 let refreshTimer = null;
-let countdown = 300;
+let countdown = 60;
 
 // ================================================================
 //  TAB SWITCHING
@@ -337,7 +344,7 @@ function switchTab(tab) {
 //  REFRESH COUNTDOWN
 // ================================================================
 function startCountdown() {
-  countdown = 300;
+  countdown = 60;
   clearInterval(refreshTimer);
   refreshTimer = setInterval(() => {
     countdown--;
@@ -363,61 +370,33 @@ async function fetchData() {
 
   try {
     setStatus('Fetching latest results...', true);
-    const res = await fetch(RESULTS_URL, { method: 'GET', mode: 'cors' });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const text = await res.text();
-    console.log('Raw Make response text (first 500):', text.substring(0, 500));
 
-    // Make returns multiple rows as newline-delimited JSON objects
-    let votes = [];
-    const lines = text.trim().split('\n').filter(l => l.trim().startsWith('{'));
+    // Fetch mid-season and end-of-season in parallel
+    const fetches = [fetch(RESULTS_URL, { method: 'GET', mode: 'cors' })];
+    const hasEOS = EOS_RESULTS_URL && EOS_RESULTS_URL !== 'PASTE_EOS_RESULTS_WEBHOOK_HERE';
+    if (hasEOS) fetches.push(fetch(EOS_RESULTS_URL, { method: 'GET', mode: 'cors' }));
 
-    if (lines.length >= 1) {
-      // Each line is a separate JSON row object from Make
-      lines.forEach(line => {
-        try {
-          const row = JSON.parse(line.trim());
-          // Skip header/metadata rows — valid vote rows have a division value
-          const norm = normaliseRow(row);
-          if (norm.division && (norm.division.includes('Division') || norm.division.includes('division'))) {
-            votes.push(norm);
-          } else if (row.values && row.values['1'] && String(row.values['1']).includes('Division')) {
-            votes.push(normaliseRow(row));
-          }
-        } catch(e) { console.warn('Skipped line:', line.substring(0,50), e.message); }
-      });
-    } else {
-      // Single object or array
-      try {
-        const parsed = JSON.parse(text);
-        if (Array.isArray(parsed)) {
-          votes = parsed.map(normaliseRow);
-        } else if (parsed && Array.isArray(parsed.votes)) {
-          votes = parsed.votes.map(normaliseRow);
-        } else if (parsed && typeof parsed === 'object' && parsed.values) {
-          votes = [normaliseRow(parsed)];
-        } else if (parsed && typeof parsed === 'object') {
-          const arrays = Object.values(parsed).filter(v => Array.isArray(v));
-          if (arrays.length > 0) votes = arrays[0].map(normaliseRow);
-        }
-      } catch(e) {
-        console.error('JSON parse error:', e);
-      }
-    }
+    const responses = await Promise.all(fetches);
+    const texts = await Promise.all(responses.map(r => r.ok ? r.text() : ''));
+
+    const midVotes = parseVotes(texts[0], 'Mid-Season');
+    const eosVotes = hasEOS ? parseVotes(texts[1], 'End-of-Season') : [];
+
+    console.log(`Mid-season: ${midVotes.length} votes, End-of-season: ${eosVotes.length} votes`);
+
+    const allVotes = [...midVotes, ...eosVotes];
 
     const data = {
-      premier_division: { votes: votes.filter(v => v.division === 'Premier Division') },
-      first_division:   { votes: votes.filter(v => v.division === 'First Division') }
+      premier_division: { votes: allVotes.filter(v => v.division === 'Premier Division' || v.division === "Men's Premier Division") },
+      first_division:   { votes: allVotes.filter(v => v.division === 'First Division'   || v.division === "Men's First Division") },
+      womens_division:  { votes: allVotes.filter(v => v.division === "Women's Premier Division") }
     };
 
-    console.log('Total votes parsed:', votes.length);
-    console.log('First vote sample:', JSON.stringify(votes[0]));
-    console.log('PD votes:', data.premier_division.votes.length, 'FD votes:', data.first_division.votes.length);
+    console.log('PD:', data.premier_division.votes.length, 'FD:', data.first_division.votes.length, 'WPD:', data.womens_division.votes.length);
 
     lastData = data;
     renderAll(data);
-    setStatus(`Last updated: ${new Date().toLocaleTimeString('en-IE')} · ${votes.length} votes loaded`, true);
-    console.log('Parsed votes:', votes.length, votes[0]);
+    setStatus(`Last updated: ${new Date().toLocaleTimeString('en-IE')} · ${allVotes.length} total votes`, true);
   } catch(err) {
     setStatus(`Connection error: ${err.message} — showing last known data`, false);
     console.error('Fetch error:', err);
@@ -425,6 +404,40 @@ async function fetchData() {
   }
 
   startCountdown();
+}
+
+function parseVotes(text, voteType) {
+  if (!text || !text.trim()) return [];
+  let votes = [];
+  const lines = text.trim().split('\n').filter(l => l.trim().startsWith('{'));
+
+  if (lines.length >= 1) {
+    lines.forEach(line => {
+      try {
+        const row = JSON.parse(line.trim());
+        const norm = normaliseRow(row, voteType);
+        if (norm.division && norm.division.includes('Division')) votes.push(norm);
+      } catch(e) { console.warn('Skipped line:', line.substring(0,50), e.message); }
+    });
+  } else {
+    try {
+      const parsed = JSON.parse(text);
+      if (Array.isArray(parsed)) {
+        votes = parsed.map(r => normaliseRow(r, voteType));
+      } else if (parsed && Array.isArray(parsed.votes)) {
+        votes = parsed.votes.map(r => normaliseRow(r, voteType));
+      } else if (parsed && typeof parsed === 'object' && parsed.values) {
+        votes = [normaliseRow(parsed, voteType)];
+      } else if (parsed && typeof parsed === 'object') {
+        const arrays = Object.values(parsed).filter(v => Array.isArray(v));
+        if (arrays.length > 0) votes = arrays[0].map(r => normaliseRow(r, voteType));
+      }
+    } catch(e) {
+      console.error('JSON parse error:', e);
+    }
+  }
+
+  return votes;
 }
 
 // Column index map — matches exact order from Excel Responses table
@@ -467,14 +480,66 @@ const COL = {
   attacker_3_club:  28,
 };
 
-function normaliseRow(row) {
+// EOS column map — matches end-of-season form payload order
+// 0=Timestamp, 1=Division, 2=FirstName, 3=LastName, 4=Email, 5=Phone, 6=Club,
+// 7=GK, 8=GKClub, 9=Def1, 10=Def1Club, ... 28=Att3Club (same as mid-season)
+// 29=PotY, 30=PotYClub, 31=YPotY, 32=YPotYClub, 33=Referee, 34=Overseas,
+// 35=OverseasClub, 36=IntlWomen, 37=TransferList, 38=TransferPosition, 39=TransferContact
+const COL_EOS = {
+  timestamp:        0,
+  division:         1,
+  voter_first_name: 2,
+  voter_last_name:  3,
+  voter_email:      4,
+  voter_phone:      5,
+  voter_club:       6,
+  goalkeeper:       7,
+  goalkeeper_club:  8,
+  defender_1:       9,
+  defender_1_club:  10,
+  defender_2:       11,
+  defender_2_club:  12,
+  defender_3:       13,
+  defender_3_club:  14,
+  defender_4:       15,
+  defender_4_club:  16,
+  midfielder_1:     17,
+  midfielder_1_club:18,
+  midfielder_2:     19,
+  midfielder_2_club:20,
+  midfielder_3:     21,
+  midfielder_3_club:22,
+  attacker_1:       23,
+  attacker_1_club:  24,
+  attacker_2:       25,
+  attacker_2_club:  26,
+  attacker_3:       27,
+  attacker_3_club:  28,
+  award_poty:       29,
+  award_poty_club:  30,
+  award_ypoty:      31,
+  award_ypoty_club: 32,
+  award_referee:    33,
+  award_overseas:   34,
+  award_overseas_club: 35,
+  award_intl_women: 36,
+  transfer_list:    37,
+  transfer_position:38,
+  transfer_contact: 39,
+};
+
+function normaliseRow(row, voteType) {
   if (!row) return {};
   // Make returns rows with numeric string keys in a "values" object
   const vals = row.values || row;
+  const colMap = (voteType === 'End-of-Season') ? COL_EOS : COL;
   const out = {};
-  Object.entries(COL).forEach(([key, idx]) => {
+  Object.entries(colMap).forEach(([key, idx]) => {
     out[key] = (vals[String(idx)] || vals[idx] || '').toString().trim();
   });
+  // Attach vote type and weight so aggregation functions can use it
+  out._voteType = voteType || 'Mid-Season';
+  out._weight = (voteType === 'End-of-Season') ? END_SEASON_WEIGHT : MID_SEASON_WEIGHT;
   return out;
 }
 
@@ -488,8 +553,9 @@ function setStatus(msg, ok) {
 //  RENDER ALL
 // ================================================================
 function renderAll(data) {
-  renderDivision('pd', data.premier_division || {}, PD_CLUBS, 'Premier Division');
-  renderDivision('fd', data.first_division || {}, FD_CLUBS, 'First Division');
+  renderDivision('pd',  data.premier_division  || {}, PD_CLUBS,  "Premier Division");
+  renderDivision('fd',  data.first_division    || {}, FD_CLUBS,  "First Division");
+  renderDivision('wpd', data.womens_division   || {}, WPD_CLUBS, "Women's Premier Division");
 }
 
 function renderDivision(prefix, data, clubs, label) {
@@ -507,21 +573,31 @@ function renderDivision(prefix, data, clubs, label) {
   wrap.appendChild(buildTopOutfield(votes, 'defender', 'Top 10 Defenders', 'slate'));
   wrap.appendChild(buildTopOutfield(votes, 'midfielder', 'Top 10 Midfielders', 'dark'));
   wrap.appendChild(buildTopOutfield(votes, 'attacker', 'Top 10 Attackers', 'crimson'));
+  // 5. EOS Awards (only if any EOS votes present)
+  const eosVotes = votes.filter(v => v._voteType === 'End-of-Season');
+  if (eosVotes.length > 0) {
+    wrap.appendChild(buildAwards(eosVotes, label));
+  }
 }
 
 // ================================================================
 //  1. VOTER TURNOUT
 // ================================================================
 function buildTurnout(votes, clubs, divLabel) {
-  // Count votes per club
+  // Count votes and weighted totals per club
   const counts = {};
-  clubs.forEach(c => counts[c] = 0);
+  const weighted = {};
+  clubs.forEach(c => { counts[c] = 0; weighted[c] = 0; });
   votes.forEach(v => {
-    if (counts[v.voter_club] !== undefined) counts[v.voter_club]++;
+    if (counts[v.voter_club] !== undefined) {
+      counts[v.voter_club]++;
+      weighted[v.voter_club] += (v._weight || MID_SEASON_WEIGHT);
+    }
   });
 
   const sorted = [...clubs].sort((a,b) => counts[b] - counts[a]);
   const total = votes.length;
+  const totalWeighted = votes.reduce((sum, v) => sum + (v._weight || MID_SEASON_WEIGHT), 0);
 
   const card = el('div','section-card');
   card.innerHTML = `<div class="section-header"><h2>📊 Voter Turnout — ${divLabel}</h2></div>`;
@@ -535,20 +611,20 @@ function buildTurnout(votes, clubs, divLabel) {
   const tbody = document.createElement('tbody');
   sorted.forEach((club, i) => {
     const raw = counts[club];
-    const weighted = (raw * MID_SEASON_WEIGHT).toFixed(1);
+    const wt = weighted[club].toFixed(1);
     const rankClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : 'rank-other';
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td><span class="rank-badge ${rankClass}">${i+1}</span></td>
       <td>${club}</td>
       <td class="num">${raw}</td>
-      <td class="num">${weighted}</td>`;
+      <td class="num">${wt}</td>`;
     tbody.appendChild(tr);
   });
   // Total row
   const totalTr = document.createElement('tr');
   totalTr.className = 'total-row';
-  totalTr.innerHTML = `<td></td><td><strong>Total Votes — ${divLabel}</strong></td><td class="num">${total}</td><td class="num">${(total * MID_SEASON_WEIGHT).toFixed(1)}</td>`;
+  totalTr.innerHTML = `<td></td><td><strong>Total Votes — ${divLabel}</strong></td><td class="num">${total}</td><td class="num">${totalWeighted.toFixed(1)}</td>`;
   tbody.appendChild(totalTr);
   table.appendChild(tbody);
   body.appendChild(table);
@@ -586,7 +662,7 @@ function aggregatePlayers(votes) {
       }
       players[name][pos]++;
       players[name].total++;
-      players[name].weighted += MID_SEASON_WEIGHT;
+      players[name].weighted += (v._weight || MID_SEASON_WEIGHT);
     });
   });
 
@@ -758,7 +834,7 @@ function buildTopGK(votes, divLabel) {
       <td><strong>${p.name}</strong></td>
       <td>${p.club}</td>
       <td class="num">${p.goalkeeper}</td>
-      <td class="num">${(p.goalkeeper * MID_SEASON_WEIGHT).toFixed(1)}</td>
+      <td class="num">${p.weighted.toFixed(1)}</td>
       <td><span class="bar-wrap"><span class="bar-fill" style="width:${barPct}%"></span></span></td>`;
     tbody.appendChild(tr);
   });
@@ -818,12 +894,79 @@ function buildTopOutfield(votes, position, title, headerClass) {
 }
 
 // ================================================================
+//  5. EOS AWARDS
+// ================================================================
+function buildAwards(eosVotes, divLabel) {
+  const card = el('div','section-card');
+  card.innerHTML = `<div class="section-header" style="background:#4a235a"><h2>🏆 End-of-Season Awards — ${divLabel}</h2></div>`;
+
+  const awards = [
+    { key: 'award_poty',       clubKey: 'award_poty_club',  label: '🥇 Player of the Year' },
+    { key: 'award_ypoty',      clubKey: 'award_ypoty_club', label: '🌟 Young Player of the Year' },
+    { key: 'award_referee',    clubKey: null,                label: '🟨 Referee of the Year' },
+    { key: 'award_overseas',   clubKey: 'award_overseas_club', label: '✈️ Overseas Player' },
+    { key: 'award_intl_women', clubKey: null,                label: '🌍 International Women\'s Player' },
+  ];
+
+  const body = el('div','section-body');
+
+  awards.forEach(award => {
+    const tally = {};
+    const clubMap = {};
+    eosVotes.forEach(v => {
+      const name = v[award.key];
+      if (!name || name === '— To Be Confirmed —') return;
+      tally[name] = (tally[name] || 0) + 1;
+      if (award.clubKey && v[award.clubKey]) clubMap[name] = v[award.clubKey];
+    });
+
+    const ranked = Object.entries(tally)
+      .sort((a,b) => b[1] - a[1])
+      .slice(0, 5);
+
+    if (ranked.length === 0) return;
+
+    const section = el('div','');
+    section.style.cssText = 'padding:14px 20px;border-bottom:1px solid var(--grey-light);';
+    const heading = el('div','');
+    heading.style.cssText = 'font-family:var(--font-display);font-size:14px;letter-spacing:1px;color:var(--text-light);margin-bottom:8px;';
+    heading.textContent = award.label;
+    section.appendChild(heading);
+
+    ranked.forEach(([name, count], i) => {
+      const rankClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : 'rank-other';
+      const row = el('div','player-entry');
+      row.style.cssText = 'border-bottom:none;padding:6px 0;';
+      const club = award.clubKey ? (clubMap[name] || '') : '';
+      row.innerHTML = `
+        <span class="rank-badge ${rankClass}" style="margin-right:8px;">${i+1}</span>
+        <div style="flex:1">
+          <span style="font-weight:600">${name}</span>
+          ${club ? `<span style="font-size:11px;color:var(--text-light);margin-left:6px;">${club}</span>` : ''}
+        </div>
+        <span class="vote-chip total">${count} vote${count !== 1 ? 's' : ''}</span>`;
+      section.appendChild(row);
+    });
+
+    body.appendChild(section);
+  });
+
+  if (!body.children.length) {
+    body.innerHTML = '<div class="empty-state">No award votes recorded yet.</div>';
+  }
+
+  card.appendChild(body);
+  return card;
+}
+
+// ================================================================
 //  SAMPLE DATA (shown when no URL configured)
 // ================================================================
 function renderWithSampleData() {
   const sample = {
     premier_division: { votes: [] },
-    first_division: { votes: [] }
+    first_division:   { votes: [] },
+    womens_division:  { votes: [] }
   };
   renderAll(sample);
 }
