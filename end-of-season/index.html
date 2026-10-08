@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PFA Ireland Team of the Year 2026 - Mid-Season Vote</title>
-<meta property="og:title" content="PFA Ireland Team of the Year 2026 - Mid-Season Vote">
-<meta property="og:description" content="Cast your Mid-Season vote for PFA Ireland Team of the Year 2026. Men's Premier Division and Men's First Division voting now open.">
+<title>PFA Ireland Team of the Year 2026 - End-of-Season Vote</title>
+<meta property="og:title" content="PFA Ireland Team of the Year 2026 - End-of-Season Vote">
+<meta property="og:description" content="Cast your End-of-Season vote for PFA Ireland Team of the Year 2026. Men's Premier Division, Men's First Division and Women's Premier Division voting now open.">
 <meta property="og:image" content="https://vote.pfaireland.ie/pfa-ireland-logo.png">
 <meta property="og:url" content="https://vote.pfaireland.ie">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="PFA Ireland Team of the Year 2026 - Mid-Season Vote">
-<meta name="twitter:description" content="Cast your Mid-Season vote for PFA Ireland Team of the Year 2026.">
+<meta name="twitter:title" content="PFA Ireland Team of the Year 2026 - End-of-Season Vote">
+<meta name="twitter:description" content="Cast your End-of-Season vote for PFA Ireland Team of the Year 2026.">
 <meta name="twitter:image" content="https://vote.pfaireland.ie/pfa-ireland-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
@@ -20,16 +20,6 @@
 =================================================================
   BRANDING & COLOUR GUIDE
   To update colours, edit ONLY the variables in this :root block.
-  
-  --green       : Main brand colour (buttons, card headers, accents)
-  --green-dark  : Darker shade (top header bar, hover states)
-  --green-light : Pale tint (backgrounds, selected states)
-  --orange      : Accent / submit button colour
-  --text        : Body text
-  --text-light  : Secondary / muted text
-
-  To swap fonts, change the Google Fonts import above and update
-  --font-display and --font-body below.
 =================================================================
 */
 :root {
@@ -60,18 +50,6 @@ header {
   display: flex; align-items: center; gap: 16px;
   position: sticky; top: 0; z-index: 100;
   box-shadow: 0 2px 16px rgba(0,0,0,0.3);
-}
-/*
-  To add a logo image instead of the text badge, replace the .logo-badge div in
-  the HTML with: <img src="your-logo.png" style="height:48px;">
-*/
-.logo-badge {
-  width: 48px; height: 48px;
-  background: var(--orange);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-display); font-size: 18px; color: white;
-  flex-shrink: 0; letter-spacing: 1px;
 }
 header h1 { font-family: var(--font-display); font-size: 22px; letter-spacing: 2px; line-height: 1.1; }
 header p  { font-size: 12px; opacity: 0.7; margin-top: 2px; }
@@ -192,16 +170,24 @@ textarea { resize: vertical; min-height: 80px; }
 .btn-submit   { background: var(--orange); color: white; flex: 1; box-shadow: 0 2px 8px rgba(255,107,0,0.3); }
 .btn-submit:hover { background: #e05f00; }
 
-/* DIVISION SELECTOR */
-.division-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+/* DIVISION SELECTOR — three columns for end-of-season */
+.division-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+@media (max-width: 560px) {
+  .division-selector { grid-template-columns: 1fr; }
+}
 .div-btn {
-  padding: 20px; border-radius: var(--radius);
+  padding: 20px 14px; border-radius: var(--radius);
   border: 2px solid var(--grey-light); background: white;
   cursor: pointer; text-align: center; transition: all 0.2s; box-shadow: var(--shadow);
 }
 .div-btn:hover { border-color: var(--green); }
 .div-btn.active { border-color: var(--green); background: var(--green-light); }
-.div-btn h3 { font-family: var(--font-display); font-size: 18px; letter-spacing: 1.5px; color: var(--green-dark); }
+.div-btn h3 { font-family: var(--font-display); font-size: 16px; letter-spacing: 1px; color: var(--green-dark); line-height: 1.2; }
 .div-btn p  { font-size: 12px; color: var(--text-light); margin-top: 4px; }
 
 /* MISC */
@@ -216,6 +202,11 @@ textarea { resize: vertical; min-height: 80px; }
   background: #fff0f0; border: 1px solid #fca5a5; border-radius: 7px;
   padding: 10px 14px; font-size: 13px; color: #991b1b; margin-bottom: 12px;
 }
+.eligibility-notice {
+  background: var(--green-light); border-left: 3px solid var(--green);
+  padding: 10px 14px; border-radius: 0 7px 7px 0;
+  font-size: 13px; color: var(--green-dark); margin-bottom: 16px;
+}
 .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
 @media (max-width: 480px) { .summary-grid { grid-template-columns: 1fr; } }
 .summary-item {
@@ -225,8 +216,6 @@ textarea { resize: vertical; min-height: 80px; }
 .summary-item .pos  { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-light); }
 .summary-item .name { font-size: 14px; font-weight: 500; color: var(--text); margin-top: 2px; }
 .summary-item .club { font-size: 12px; color: var(--text-light); }
-.nfq-link { font-size: 12px; color: var(--green); text-decoration: none; display: inline-block; margin-top: 4px; }
-.nfq-link:hover { text-decoration: underline; }
 .success-screen { text-align: center; padding: 60px 20px; }
 .success-screen .icon {
   width: 72px; height: 72px; background: var(--green); border-radius: 50%;
@@ -240,7 +229,7 @@ textarea { resize: vertical; min-height: 80px; }
 .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* VOTING CLOSED SCREEN */
+/* VOTING CLOSED CARD */
 .voting-closed-card {
   background: white;
   border-radius: var(--radius);
@@ -275,30 +264,31 @@ textarea { resize: vertical; min-height: 80px; }
 }
 .voting-closed-card a:hover { text-decoration: underline; }
 .closed-icon {
-  width: 64px;
-  height: 64px;
-  background: var(--grey-light);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 20px;
-  font-size: 28px;
+  width: 64px; height: 64px;
+  background: var(--grey-light); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px; font-size: 28px;
 }
+
+/* Manual entry */
+.manual-entry-wrap { margin-top: 12px; display: none; }
+.manual-entry-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-light); display: block; margin-bottom: 6px; }
+.manual-entry-input { width: 100%; }
+.manual-entry-info { font-size: 11px; color: var(--text-light); margin-top: 4px; font-style: italic; }
 </style>
 </head>
 <body>
 
 <header>
-     <img src="pfa-ireland-logo.png" style="height:48px; width:auto;">
+  <img src="pfa-ireland-logo.png" style="height:48px; width:auto;">
   <div>
     <h1>PFA Ireland Team of the Year 2026</h1>
-    <p>Mid-Season Vote · League of Ireland</p>
+    <p>End-of-Season Vote · League of Ireland</p>
   </div>
 </header>
 <div class="progress-bar-wrap">
   <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-  <div class="progress-label" id="progressLabel">Step 1 of 5</div>
+  <div class="progress-label" id="progressLabel">Step 1 of 6</div>
 </div>
 
 <!-- VOTING CLOSED PAGE -->
@@ -313,13 +303,14 @@ textarea { resize: vertical; min-height: 80px; }
 </div>
 
 <div class="container">
-  
+
   <!-- STEP 1: Division & Club -->
   <div class="step active" id="step1">
     <div class="card">
       <div class="card-header"><div class="step-num">1</div><h2>Select Your Division</h2></div>
       <div class="card-body">
         <p style="font-size:14px;color:var(--text-light);margin-bottom:20px;">Select the division you play in. You will only vote for players in your division.</p>
+
         <div class="division-selector">
           <div class="div-btn" id="divPremier" onclick="selectDivision('premier')">
             <h3>Men's Premier Division</h3><p>10 clubs</p>
@@ -327,12 +318,16 @@ textarea { resize: vertical; min-height: 80px; }
           <div class="div-btn" id="divFirst" onclick="selectDivision('first')">
             <h3>Men's First Division</h3><p>10 clubs</p>
           </div>
+          <div class="div-btn" id="divWomens" onclick="selectDivision('womens')">
+            <h3>Women's Premier Division</h3><p><!-- UPDATE: add club count when list received --></p>
+          </div>
         </div>
+
         <div style="background:#fff3cd;border:1px solid #ffc107;border-left:4px solid #e6a817;border-radius:7px;padding:12px 16px;font-size:13px;color:#5a4000;line-height:1.6;margin-bottom:16px;">
           ⚠️ <strong>Please note:</strong> Only First-Team players are permitted to vote and each player may only vote once.
         </div>
 
-        <div class="field-group" id="voterClubField" style="display:none">          
+        <div class="field-group" id="voterClubField" style="display:none">
           <label>Your Club</label>
           <select id="voterClub" onchange="onVoterClubChange()">
             <option value="">— Select your club —</option>
@@ -367,7 +362,6 @@ textarea { resize: vertical; min-height: 80px; }
           <input type="email" id="email" placeholder="e.g. conor@example.com">
           <div class="error-msg" id="err_email">Please enter a valid email address.</div>
         </div>
-       
         <div class="nav-buttons">
           <button class="btn btn-secondary" onclick="goStep(1)">← Back</button>
           <button class="btn btn-primary" onclick="goStep(3)">Continue →</button>
@@ -393,7 +387,102 @@ textarea { resize: vertical; min-height: 80px; }
         <div id="reviewContent"></div>
         <div class="nav-buttons">
           <button class="btn btn-secondary" onclick="goStep(3)">← Edit</button>
-          <button class="btn btn-primary" onclick="goStep(5)">Looks Good →</button>
+          <button class="btn btn-primary" onclick="goStep('4b')">Next: Awards →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- STEP 4b: End-of-Season Awards -->
+  <div class="step" id="step4b">
+    <div class="card">
+      <div class="card-header"><div class="step-num">5</div><h2>End-of-Season Awards</h2></div>
+      <div class="card-body">
+        <p style="font-size:13px;color:var(--text-light);margin-bottom:24px;">Cast your votes for the end-of-season individual awards. Your own club is excluded from nominations.</p>
+
+        <!-- Player of the Year -->
+        <div class="field-group" style="margin-bottom:28px;" id="poty_section">
+          <label style="font-size:15px;font-weight:700;text-transform:none;letter-spacing:0;color:#1a1a1a;margin-bottom:10px;display:block;">Player of the Year</label>
+          <p style="font-size:12px;color:var(--text-light);margin-bottom:10px;">First select a club, then choose the player.</p>
+          <select id="poty_club" onchange="onPotyClubChange()" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:10px;background:white;">
+            <option value="">— Select Club —</option>
+          </select>
+          <select id="poty_player" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;background:white;" disabled>
+            <option value="">— Select Player —</option>
+          </select>
+          <div class="error-msg" id="err_poty">Please select a player.</div>
+        </div>
+
+        <!-- Young Player of the Year -->
+        <div class="field-group" style="margin-bottom:28px;" id="ypoty_section">
+          <label style="font-size:15px;font-weight:700;text-transform:none;letter-spacing:0;color:#1a1a1a;margin-bottom:10px;display:block;">Young Player of the Year</label>
+          <p style="font-size:12px;color:var(--text-light);margin-bottom:6px;line-height:1.6;">To be eligible, a player must have been <strong>21 or under on 1 January 2026</strong> — Only players who qualify will be listed for selection.</p>
+          <p style="font-size:12px;color:var(--text-light);margin-bottom:10px;" id="ypoty_pool_note"></p>
+          <select id="ypoty_club" onchange="onYpotyClubChange()" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:10px;background:white;">
+            <option value="">— Select Club —</option>
+          </select>
+          <select id="ypoty_player" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;background:white;" disabled>
+            <option value="">— Select Player —</option>
+          </select>
+          <div class="error-msg" id="err_ypoty">Please select a player.</div>
+        </div>
+
+        <!-- Referee of the Year -->
+        <div class="field-group" style="margin-bottom:28px;">
+          <label style="font-size:15px;font-weight:700;text-transform:none;letter-spacing:0;color:#1a1a1a;margin-bottom:10px;display:block;">Referee of the Year</label>
+          <select id="referee_award" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;background:white;">
+            <option value="">— Select Referee —</option>
+          </select>
+          <div class="error-msg" id="err_referee">Please select a referee.</div>
+        </div>
+
+        <!-- Overseas / International award — div hidden per division -->
+        <!-- Men's: Irish Overseas Player of the Year (free text) -->
+        <div class="field-group" style="margin-bottom:28px;" id="overseas_men_section">
+          <label style="font-size:15px;font-weight:700;text-transform:none;letter-spacing:0;color:#1a1a1a;margin-bottom:10px;display:block;">Irish Overseas Player of the Year</label>
+          <p style="font-size:12px;color:var(--text-light);margin-bottom:8px;line-height:1.6;">Nominate an Irish player who is currently playing in a <strong>professional league outside the Republic of Ireland</strong>. Players competing in the League of Ireland or in amateur leagues abroad do not qualify for this award.</p>
+          <input type="text" id="overseas_player" placeholder="Player name" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;box-sizing:border-box;margin-bottom:8px;">
+          <input type="text" id="overseas_club" placeholder="Club" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;box-sizing:border-box;">
+        </div>
+
+        <!-- Women's: International Women's Player of the Year (dropdown) -->
+        <div class="field-group" style="margin-bottom:28px;" id="intl_women_section">
+          <label style="font-size:15px;font-weight:700;text-transform:none;letter-spacing:0;color:#1a1a1a;margin-bottom:10px;display:block;">International Women's Player of the Year</label>
+          <select id="intl_women_player" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;background:white;">
+            <option value="">— Select Player —</option>
+          </select>
+          <div class="error-msg" id="err_intl_women">Please select a player.</div>
+        </div>
+
+        <!-- Transfer List -->
+        <div class="field-group" style="margin-bottom:28px;padding:16px;background:#f8f9fa;border-radius:10px;border:1px solid #e8e8e5;">
+          <label style="font-size:15px;font-weight:700;text-transform:none;letter-spacing:0;color:#1a1a1a;margin-bottom:10px;display:block;">Transfer List</label>
+          <p style="font-size:12px;color:var(--text-light);margin-bottom:12px;">Would you like to be added to the PFA Ireland Transfer List for 2026/27?</p>
+          <div class="radio-group" id="q_transfer_list">
+            <label class="radio-option" onclick="selectRadio('transfer_list','Yes');onTransferListChange('Yes')"><input type="radio" name="transfer_list" value="Yes"> Yes</label>
+            <label class="radio-option" onclick="selectRadio('transfer_list','No');onTransferListChange('No')"><input type="radio" name="transfer_list" value="No"> No</label>
+          </div>
+          <div id="transfer_details" style="display:none;margin-top:16px;">
+            <div style="background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:#856404;line-height:1.6;">
+              ⚠️ <strong>Please note</strong> that your contact details as provided may be shared with clubs/managers that may wish to contact you. You can remove yourself from the Transfer List at any time by emailing <a href="mailto:john@pfai.ie" style="color:#856404;">john@pfai.ie</a>.
+            </div>
+            <label style="font-size:13px;font-weight:600;color:#333;margin-bottom:6px;display:block;">Please select the position you would like to be listed as on the Transfer List</label>
+            <select id="transfer_position" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;background:white;margin-bottom:12px;">
+              <option value="">— Select Position —</option>
+              <option value="GK">GK — Goalkeeper</option>
+              <option value="DEF">DEF — Defender</option>
+              <option value="MID">MID — Midfielder</option>
+              <option value="ATT">ATT — Attacker</option>
+            </select>
+            <label style="font-size:13px;font-weight:600;color:#333;margin-bottom:6px;display:block;">Contact Number <span style="font-weight:400;color:var(--text-light);">(Note: This will not be listed publicly)</span></label>
+            <input type="tel" id="transfer_contact" placeholder="e.g. +353 87 000 0000" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;box-sizing:border-box;">
+          </div>
+        </div>
+
+        <div class="nav-buttons">
+          <button class="btn btn-secondary" onclick="goStep(4)">← Back</button>
+          <button class="btn btn-primary" onclick="goStep(5)">Next →</button>
         </div>
       </div>
     </div>
@@ -402,11 +491,11 @@ textarea { resize: vertical; min-height: 80px; }
   <!-- STEP 5: Survey -->
   <div class="step" id="step5">
     <div class="card">
-      <div class="card-header"><div class="step-num">5</div><h2>Short Survey</h2></div>
+      <div class="card-header"><div class="step-num">6</div><h2>Short Survey</h2></div>
       <div class="card-body">
         <p style="font-size:13px;color:var(--text-light);margin-bottom:20px;">These questions help us support our members better. We will never share your individual responses without your permission.</p>
 
- <!-- NFQ lightbox overlay -->
+        <!-- NFQ lightbox overlay -->
         <div id="nfqOverlay" onclick="closeNFQ()" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;align-items:center;justify-content:center;cursor:zoom-out;padding:20px;">
           <span onclick="closeNFQ()" style="position:fixed;top:16px;right:20px;color:white;font-size:32px;font-weight:300;cursor:pointer;opacity:0.8;line-height:1;">✕</span>
           <img src="nfq-chart.gif" alt="National Framework of Qualifications" style="max-width:100%;max-height:90vh;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,0.5);">
@@ -451,7 +540,8 @@ textarea { resize: vertical; min-height: 80px; }
 
         <div class="field-group" style="margin-bottom:32px;">
           <label style="font-size:15px;font-weight:700;text-transform:none;letter-spacing:0;color:#1a1a1a;margin-bottom:10px;display:block;">PFA Ireland Business School Interest</label>
-          <p style="font-size:12px;color:var(--text-light);margin-bottom:6px;">If PFA Ireland were to launch a business school offering stackable micro-credentials in business, media and sport, might this be of interest to you?</p> <p style="font-size:11px;color:var(--text-light);opacity:0.8;margin-bottom:10px;line-height:1.6;font-style:italic;">Stackable micro-credentials are flexible, accredited, short-form courses. Instead of committing to a multi-year degree, you earn "bite-sized" certifications. When completed, these credentials can be combined or "stacked" over time to build toward a larger qualification, such as a Professional Diploma or a Master's degree.</p>
+          <p style="font-size:12px;color:var(--text-light);margin-bottom:6px;">If PFA Ireland were to launch a business school offering stackable micro-credentials in business, media and sport, might this be of interest to you?</p>
+          <p style="font-size:11px;color:var(--text-light);opacity:0.8;margin-bottom:10px;line-height:1.6;font-style:italic;">Stackable micro-credentials are flexible, accredited, short-form courses. Instead of committing to a multi-year degree, you earn "bite-sized" certifications. When completed, these credentials can be combined or "stacked" over time to build toward a larger qualification, such as a Professional Diploma or a Master's degree.</p>
           <div class="radio-group" id="q_bizSchool">
             <label class="radio-option" onclick="selectRadio('bizSchool','Yes')"><input type="radio" name="bizSchool" value="Yes"> Yes</label>
             <label class="radio-option" onclick="selectRadio('bizSchool','No')"><input type="radio" name="bizSchool" value="No"> No</label>
@@ -495,7 +585,7 @@ textarea { resize: vertical; min-height: 80px; }
         </div>
 
         <div class="nav-buttons">
-          <button class="btn btn-secondary" onclick="goStep(4)">← Back</button>
+          <button class="btn btn-secondary" onclick="goStep('4b')">← Back</button>
           <button class="btn btn-submit" id="submitBtn" onclick="submitVote()">Submit Vote ✓</button>
         </div>
       </div>
@@ -508,8 +598,8 @@ textarea { resize: vertical; min-height: 80px; }
       <div class="success-screen">
         <div class="icon">✓</div>
         <h2>Vote Submitted!</h2>
-        <p>Thank you for casting your Mid-Season Team of the Year vote.</p>
-        <p style="margin-top:12px;font-size:13px;">Your response has been recorded. Results will be combined with the End-of-Season vote later this year.</p>
+        <p>Thank you for casting your End-of-Season Team of the Year vote.</p>
+        <p style="margin-top:12px;font-size:13px;">Your response has been recorded. End-of-Season results will be combined with Mid-Season votes to determine the final Team of the Year.</p>
       </div>
     </div>
   </div>
@@ -524,83 +614,984 @@ textarea { resize: vertical; min-height: 80px; }
 // ================================================================
 const VOTING_OPEN = true;
 
-// Run immediately — DOM is already loaded since script is at end of body
+// Run immediately — DOM already loaded (script at end of body)
 if (!VOTING_OPEN) {
-  var _header = document.querySelector('header');
+  var _header   = document.querySelector('header');
   var _progress = document.querySelector('.progress-bar-wrap');
-  var _container = document.querySelector('.container');
-  var _closedPage = document.getElementById('votingClosedPage');
-  if (_header) _header.style.display = 'none';
-  if (_progress) _progress.style.display = 'none';
-  if (_container) _container.style.display = 'none';
+  var _container= document.querySelector('.container');
+  var _closedPage= document.getElementById('votingClosedPage');
+  if (_header)     _header.style.display = 'none';
+  if (_progress)   _progress.style.display = 'none';
+  if (_container)  _container.style.display = 'none';
   if (_closedPage) _closedPage.style.display = 'flex';
 }
+
+// ================================================================
+//  MAKE.COM WEBHOOK
+//
+//  HOW TO SET THIS UP:
+//  1. In Make.com, duplicate the existing mid-season Scenario 1
+//     (the vote submission scenario).
+//  2. Change the Excel file it writes to: point it at the new
+//     end-of-season Excel file you create in OneDrive.
+//  3. Activate the new scenario and copy its webhook URL.
+//  4. Paste that URL here, replacing the placeholder below.
+// ================================================================
+const SUBMISSION_WEBHOOK_URL = 'PASTE_END_OF_SEASON_WEBHOOK_URL_HERE';
 
 // ================================================================
 //  NFQ LIGHTBOX
 // ================================================================
 function openNFQ() {
-  const overlay = document.getElementById('nfqOverlay');
-  overlay.style.display = 'flex';
+  document.getElementById('nfqOverlay').style.display = 'flex';
   document.body.style.overflow = 'hidden';
 }
 function closeNFQ() {
-  const overlay = document.getElementById('nfqOverlay');
-  overlay.style.display = 'none';
+  document.getElementById('nfqOverlay').style.display = 'none';
   document.body.style.overflow = '';
 }
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeNFQ();
-});
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeNFQ(); });
 
 // ================================================================
-//  PLAYER DATA — sourced directly from pivot tables in
-//  260604_LOI_Player_Apperance_Data.xlsx (500+ minutes played)
+//  PLAYER DATA
 //
 //  HOW TO UPDATE PLAYERS:
 //  Each player entry looks like:
 //    {"display_name": "Player Name", "club": "Club Name", "is_goalkeeper": false}
 //
-//  To ADD a player: copy an existing line, paste it at the end of
-//    the relevant array (before the closing ]), and edit the values.
-//    Set is_goalkeeper to true only if they are a goalkeeper.
+//  To ADD a player: copy an existing line and edit the values.
+//  To REMOVE a player: delete their entire line.
+//  Set is_goalkeeper: true only for goalkeepers.
+//  Club names must exactly match the entries in the *_CLUBS array.
 //
-//  To REMOVE a player: delete their entire line (including the
-//    trailing comma if it's not the last item in the array).
-//
-//  To REMOVE ALL players from a club: find entries where
-//    "club": "Club Name" and delete those lines.
-//
-//  Club names must exactly match the entries in FD_CLUBS / PD_CLUBS.
-//
-//  After editing, refresh the page to see changes.
+//  WHEN YOU RECEIVE THE UPDATED PLAYER LISTS:
+//  - Update FD_PLAYERS with the end-of-season First Division eligible list
+//  - Replace WPD_PLAYERS and WPD_CLUBS with the Women's Premier Division data
+//  - Update the club count in the division button (<p> tags in HTML above)
 // ================================================================
 
-const FD_CLUBS = ["Athlone Town", "Bray Wanderers", "Cobh Ramblers", "Cork City", "Finn Harps", "Kerry", "Longford Town", "Treaty United", "UCD", "Wexford"];
-const PD_CLUBS = ["Bohemians", "Derry City", "Drogheda United", "Dundalk", "Galway United", "Shamrock Rovers", "Shelbourne", "Sligo Rovers", "St. Patrick's Athletic", "Waterford"];
+// ------------------------------------------------------------------
+//  MEN'S PREMIER DIVISION — End-of-Season eligible list
+//  (500+ minutes by end of season)
+//  ✅ UPDATED: This is the end-of-season eligible list provided 30 Sep 2026
+// ------------------------------------------------------------------
+const PD_CLUBS = [
+  "Bohemians",
+  "Derry City",
+  "Drogheda United",
+  "Dundalk",
+  "Galway United",
+  "Shamrock Rovers",
+  "Shelbourne",
+  "Sligo Rovers",
+  "St. Patrick's Athletic",
+  "Waterford",
+];
 
-const FD_PLAYERS = [{"display_name": "Zayd Abada", "club": "Wexford", "is_goalkeeper": false}, {"display_name": "Jason Abbott", "club": "Cobh Ramblers", "is_goalkeeper": false}, {"display_name": "Ifunanyachi Achara", "club": "Bray Wanderers", "is_goalkeeper": false}, {"display_name": "Sultan Adenekan", "club": "Longford Town", "is_goalkeeper": false}, {"display_name": "Aderinsola Abdul-Lateef Adewale", "club": "Athlone Town", "is_goalkeeper": false}, {"display_name": "Temiloluwa Ajibola", "club": "Finn Harps", "is_goalkeeper": false}, {"display_name": "Samuel Aladesanusi", "club": "Kerry", "is_goalkeeper": false}, {"display_name": "Aime Azende Nyembo", "club": "Bray Wanderers", "is_goalkeeper": false}, {"display_name": "Cian Bargary", "club": "Kerry", "is_goalkeeper": false}, {"display_name": "Ciaran Behan", "club": "UCD", "is_goalkeeper": false}, {"display_name": "Greg Bolger", "club": "Cork City", "is_goalkeeper": false}, {"display_name": "Vincent Borden", "club": "Kerry", "is_goalkeeper": false}, {"display_name": "Joel Bradley-Walsh", "club": "Finn Harps", "is_goalkeeper": false}, {"display_name": "Jack Brady", "club": "Treaty United", "is_goalkeeper": true}, {"display_name": "Conor Brann", "club": "Cork City", "is_goalkeeper": true}, {"display_name": "Rhys Brennan", "club": "Cobh Ramblers", "is_goalkeeper": false}, {"display_name": "Sean Brennan", "club": "Bray Wanderers", "is_goalkeeper": false}, {"display_name": "Oran Brogan", "club": "Finn Harps", "is_goalkeeper": false}, {"display_name": "Niall Brookwell", "club": "Kerry", "is_goalkeeper": false}, {"display_name": "Garry Buckley", "club": "Cobh Ramblers", "is_goalkeeper": false}, {"display_name": "Ryan Butler", "club": "Wexford", "is_goalkeeper": false}, {"display_name": "Luca Cailloce", "club": "UCD", "is_goalkeeper": false}, {"display_name": "Kilian Cantwell", "club": "Kerry", "is_goalkeeper": false}, {"display_name": "Mikey Carroll", "club": "Cobh Ramblers", "is_goalkeeper": false}, {"display_name": "Eanna Clancy", "club": "UCD", "is_goalkeeper": false}, {"display_name": "Brendan Clarke", "club": "Athlone Town", "is_goalkeeper": true}, {"display_name": "Callum Cleary", "club": "Athlone Town", "is_goalkeeper": false}, {"display_name": "Cian Coleman", "club": "Cobh Ramblers", "is_goalkeeper": false}, {"display_name": "Aaron Connolly", "club": "Athlone Town", "is_goalkeeper": false}, {"display_name": "Matthew Connor", "club": "Kerry", "is_goalkeeper": true}, {"display_name": "James Corcoran", "club": "Bray Wanderers", "is_goalkeeper": true}, {"display_name": "James Crawford", "club": "Athlone Town", "is_goalkeeper": false}, {"display_name": "Oran Crowe", "club": "Cobh Ramblers", "is_goalkeeper": false}, {"display_name": "Darragh Crowley", "club": "Cork City", "is_goalkeeper": false}, {"display_name": "Josh Cullen", "club": "Finn Harps", "is_goalkeeper": false}, {"display_name": "Lucas Curtin", "club": "Cobh Ramblers", "is_goalkeeper": false}, {"display_name": "Cian Curtis", "club": "Treaty United", "is_goalkeeper": false}, {"display_name": "Louis Dignam", "club": "UCD", "is_goalkeeper": false}, {"display_name": "Aaron Doran", "club": "Longford Town", "is_goalkeeper": false}, {"display_name": "Bernardo Dos Santos Monteiro", "club": "Finn Harps", "is_goalkeeper": false}, {"display_name": "Cian Doyle", "club": "Bray Wanderers", "is_goalkeeper": false}, {"display_name": "Jake Doyle", "club": "Wexford", "is_goalkeeper": false}, {"display_name": "Conor Drinan", "club": "Cork City", "is_goalkeeper": false}, {"display_name": "Jamie Duggan", "club": "Bray Wanderers", "is_goalkeeper": false}, {"display_name": "Conor Errity", "club": "Longford Town", "is_goalkeeper": false}, {"display_name": "Alex-Mathis Fanle Tiego", "club": "Finn Harps", "is_goalkeeper": false}, {"display_name": "Rory Feely", "club": "Cork City", "is_goalkeeper": false}, {"display_name": "Ben Feeney", "club": "Treaty United", "is_goalkeeper": false}, {"display_name": "Richard Ferizaj", "club": "Bray Wanderers", "is_goalkeeper": false}, {"display_name": "Patrick Ferry", "club": "Athlone Town", "is_goalkeeper": false}, {"display_name": "Joshua Fitzpatrick", "club": "Cork City", "is_goalkeeper": false}, {"display_name": "Kyle Foley", "club": "Treaty United", "is_goalkeeper": false}, {"display_name": "Brendan Frahill", "club": "Cobh Ramblers", "is_goalkeeper": false}, {"display_name": "Rhys  Gourdie", "club": "Cobh Ramblers", "is_goalkeeper": false}, {"display_name": "Shane Griffin (No. 6)", "club": "Cobh Ramblers", "is_goalkeeper": false}, {"display_name": "Peter Grogan", "club": "Athlone Town", "is_goalkeeper": false}, {"display_name": "Jonas Häkkinen", "club": "Kerry", "is_goalkeeper": false}, {"display_name": "Harry Halwax", "club": "Kerry", "is_goalkeeper": true}, {"display_name": "Dylan Hand", "club": "Wexford", "is_goalkeeper": false}, {"display_name": "Kaylem Harnett", "club": "Wexford", "is_goalkeeper": false}, {"display_name": "Steven Healy", "club": "Treaty United", "is_goalkeeper": false}, {"display_name": "Gavin Hodgins", "club": "Wexford", "is_goalkeeper": false}, {"display_name": "Niall Holohan", "club": "UCD", "is_goalkeeper": false}, {"display_name": "Callum Honohan", "club": "Cobh Ramblers", "is_goalkeeper": false}, {"display_name": "Jake Hough", "club": "Longford Town", "is_goalkeeper": false}, {"display_name": "Max Hutchison", "club": "Finn Harps", "is_goalkeeper": false}, {"display_name": "Osaze Irhue", "club": "Longford Town", "is_goalkeeper": false}, {"display_name": "Hans Kamta Mpongo", "club": "Cork City", "is_goalkeeper": false}, {"display_name": "Dara Kavanagh", "club": "UCD", "is_goalkeeper": true}, {"display_name": "Ruairi Keating", "club": "Cork City", "is_goalkeeper": false}, {"display_name": "Jonathan Kehir", "club": "Athlone Town", "is_goalkeeper": false}, {"display_name": "Fiacre Kelleher", "club": "Cork City", "is_goalkeeper": false}, {"display_name": "Ryan Kelliher", "club": "Kerry", "is_goalkeeper": false}, {"display_name": "Rhys Kelly-Noonan", "club": "Cobh Ramblers", "is_goalkeeper": false}, {"display_name": "Alain Kizenga", "club": "Bray Wanderers", "is_goalkeeper": false}, {"display_name": "Dean Larkin", "club": "Wexford", "is_goalkeeper": false}, {"display_name": "Luka Le Bervet", "club": "Cobh Ramblers", "is_goalkeeper": false}, {"display_name": "Ewan Lee", "club": "Kerry", "is_goalkeeper": false}, {"display_name": "Carl Lennox", "club": "UCD", "is_goalkeeper": false}, {"display_name": "Gradi Lomboto", "club": "Athlone Town", "is_goalkeeper": false}, {"display_name": "Nathan Lumingo", "club": "Finn Harps", "is_goalkeeper": false}, {"display_name": "Benjamin Lynch", "club": "Treaty United", "is_goalkeeper": false}, {"display_name": "Robbie Lynch", "club": "Treaty United", "is_goalkeeper": false}, {"display_name": "Charlie Lyons", "club": "Cork City", "is_goalkeeper": false}, {"display_name": "Robert Lyons", "club": "Athlone Town", "is_goalkeeper": false}, {"display_name": "Sean Maguire", "club": "Cork City", "is_goalkeeper": false}, {"display_name": "Daniel Ricardo Manita De Lacerda", "club": "Finn Harps", "is_goalkeeper": false}, {"display_name": "Pharrell Manuel", "club": "Longford Town", "is_goalkeeper": false}, {"display_name": "Paul Martin", "club": "Wexford", "is_goalkeeper": true}, {"display_name": "Timothy Martin", "club": "Cobh Ramblers", "is_goalkeeper": true}, {"display_name": "Gavin Mc Ateer", "club": "Finn Harps", "is_goalkeeper": false}, {"display_name": "Ben Mc Cormack", "club": "Bray Wanderers", "is_goalkeeper": false}, {"display_name": "Taylor McCarthy", "club": "Longford Town", "is_goalkeeper": false}, {"display_name": "Robert McCourt", "club": "Wexford", "is_goalkeeper": false}, {"display_name": "Michael McCullagh", "club": "UCD", "is_goalkeeper": false}, {"display_name": "Dylan McGlade", "club": "Cobh Ramblers", "is_goalkeeper": false}, {"display_name": "Sean McGrath", "club": "Kerry", "is_goalkeeper": false}, {"display_name": "Daniel McKenna", "club": "Longford Town", "is_goalkeeper": false}, {"display_name": "Aaron McLaughlin", "club": "Finn Harps", "is_goalkeeper": false}, {"display_name": "Brian McManus", "club": "Athlone Town", "is_goalkeeper": false}, {"display_name": "Tony McNamee", "club": "Finn Harps", "is_goalkeeper": false}, {"display_name": "Stephen Mohan", "club": "UCD", "is_goalkeeper": false}, {"display_name": "Aaron Moloney", "club": "Athlone Town", "is_goalkeeper": false}, {"display_name": "Kian Moore", "club": "Longford Town", "is_goalkeeper": true}, {"display_name": "Sean Moore", "club": "Longford Town", "is_goalkeeper": false}, {"display_name": "Cian Murphy", "club": "Kerry", "is_goalkeeper": false}, {"display_name": "Cillian Murphy", "club": "Cork City", "is_goalkeeper": false}, {"display_name": "Mark Murphy", "club": "Treaty United", "is_goalkeeper": false}, {"display_name": "Max Murphy", "club": "Wexford", "is_goalkeeper": false}, {"display_name": "Sean Murphy", "club": "UCD", "is_goalkeeper": false}, {"display_name": "Daragh Murtagh", "club": "Longford Town", "is_goalkeeper": false}, {"display_name": "Harry Nevin", "club": "Cork City", "is_goalkeeper": false}, {"display_name": "Darren Nwankwo", "club": "Treaty United", "is_goalkeeper": false}, {"display_name": "Alex O'Brien", "club": "Longford Town", "is_goalkeeper": false}, {"display_name": "Sean O'Connell", "club": "Kerry", "is_goalkeeper": false}, {"display_name": "Evan O'Connor", "club": "Athlone Town", "is_goalkeeper": false}, {"display_name": "Kyle O'Connor", "club": "Athlone Town", "is_goalkeeper": false}, {"display_name": "Raphael Ohin", "club": "Treaty United", "is_goalkeeper": false}, {"display_name": "Cole Omorehiomwan", "club": "Longford Town", "is_goalkeeper": false}, {"display_name": "Billy O'Neill", "club": "Bray Wanderers", "is_goalkeeper": false}, {"display_name": "Luke O'Regan", "club": "UCD", "is_goalkeeper": false}, {"display_name": "Declan Osagie", "club": "Bray Wanderers", "is_goalkeeper": false}, {"display_name": "Evan Osam", "club": "Wexford", "is_goalkeeper": false}, {"display_name": "Dean O'Shea", "club": "Bray Wanderers", "is_goalkeeper": false}, {"display_name": "Jason Folarin Oyenuga", "club": "Treaty United", "is_goalkeeper": false}, {"display_name": "Andy Paraschiv", "club": "Longford Town", "is_goalkeeper": false}, {"display_name": "Lorenzo Piaia Barbosa", "club": "Finn Harps", "is_goalkeeper": true}, {"display_name": "Michael Raggett", "club": "UCD", "is_goalkeeper": false}, {"display_name": "Daniel Ring", "club": "Bray Wanderers", "is_goalkeeper": false}, {"display_name": "Ryan Ritchie", "club": "Wexford", "is_goalkeeper": false}, {"display_name": "Mikie Rowe", "club": "Wexford", "is_goalkeeper": false}, {"display_name": "Tyreik Sammy", "club": "Bray Wanderers", "is_goalkeeper": false}, {"display_name": "Corey Sheridan", "club": "Finn Harps", "is_goalkeeper": true}, {"display_name": "Hugh Smith", "club": "UCD", "is_goalkeeper": false}, {"display_name": "Andrew Stuart Trainor", "club": "Athlone Town", "is_goalkeeper": true}, {"display_name": "Steve Perrault Tokam Membou", "club": "Finn Harps", "is_goalkeeper": false}, {"display_name": "Cillian Tollett", "club": "Athlone Town", "is_goalkeeper": false}, {"display_name": "Conor Tourish", "club": "Finn Harps", "is_goalkeeper": false}, {"display_name": "Stefan Ugbesia", "club": "Longford Town", "is_goalkeeper": false}, {"display_name": "Adam Verdon", "club": "Wexford", "is_goalkeeper": false}, {"display_name": "Wilson Waweru", "club": "Cobh Ramblers", "is_goalkeeper": false}, {"display_name": "Reece Webb", "club": "Athlone Town", "is_goalkeeper": false}, {"display_name": "Adam Wells", "club": "UCD", "is_goalkeeper": false}, {"display_name": "Dean Williams", "club": "Longford Town", "is_goalkeeper": false}, {"display_name": "Jamie Wynne", "club": "Wexford", "is_goalkeeper": false}, {"display_name": "Eric Yoro", "club": "Treaty United", "is_goalkeeper": false}, {"display_name": "Idir Yacine Zerrouk", "club": "Finn Harps", "is_goalkeeper": false}];
+const PD_PLAYERS = [
+  {"display_name": "Aaron Bolger", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Aaron Greene", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Adam Brennan", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Adam Matthews", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Adam McDonnell", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Adam O'Reilly", "club": "Derry City", "is_goalkeeper": false},
+  {"display_name": "Ademipo Odubeko", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Afolabi Akinyemi", "club": "Derry City", "is_goalkeeper": false},
+  {"display_name": "Aidan Keena", "club": "St. Patrick's Athletic", "is_goalkeeper": false},
+  {"display_name": "Al-Amin Kazeem", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Alex Nolan", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Alfie Bates", "club": "Drogheda United", "is_goalkeeper": false},
+  {"display_name": "Alistair Coote", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Andrew Quinn", "club": "Drogheda United", "is_goalkeeper": false},
+  {"display_name": "Anthony Breslin", "club": "St. Patrick's Athletic", "is_goalkeeper": false},
+  {"display_name": "Anthony O Connor", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Aodh Dervin", "club": "Dundalk", "is_goalkeeper": false},
+  {"display_name": "Archie Meekison", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Arlo Doherty", "club": "Waterford", "is_goalkeeper": true},
+  {"display_name": "Arthur Parker", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Barry Cotter", "club": "Derry City", "is_goalkeeper": false},
+  {"display_name": "Barry Crowe Baggley", "club": "St. Patrick's Athletic", "is_goalkeeper": false},
+  {"display_name": "Ben Doherty", "club": "Derry City", "is_goalkeeper": false},
+  {"display_name": "Bernardo Peixoto Couto", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Brandon Fleming", "club": "Derry City", "is_goalkeeper": false},
+  {"display_name": "Brandon Kavanagh", "club": "Drogheda United", "is_goalkeeper": false},
+  {"display_name": "Cameron Dummigan", "club": "Derry City", "is_goalkeeper": false},
+  {"display_name": "Carl McHugh", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Carl Winchester", "club": "Derry City", "is_goalkeeper": false},
+  {"display_name": "Christopher Forrester", "club": "St. Patrick's Athletic", "is_goalkeeper": false},
+  {"display_name": "Cian Byrne", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Cian Dillon", "club": "Dundalk", "is_goalkeeper": false},
+  {"display_name": "Cian Kavanagh", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Colm Whelan", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Conan Noonan", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Connor Barratt", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Connor Parsons", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Conor Barr", "club": "Derry City", "is_goalkeeper": false},
+  {"display_name": "Conor Carty", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Conor Kane", "club": "Drogheda United", "is_goalkeeper": false},
+  {"display_name": "Conor Kearns", "club": "Dundalk", "is_goalkeeper": true},
+  {"display_name": "Conor Keeley", "club": "Drogheda United", "is_goalkeeper": false},
+  {"display_name": "Cory O'Sullivan", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Daire Patton", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Daniel Cleary", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Daniel Grant", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Daniel Kelly", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Danny Mullen", "club": "Dundalk", "is_goalkeeper": false},
+  {"display_name": "Darragh Markey", "club": "Derry City", "is_goalkeeper": false},
+  {"display_name": "Darragh Nugent", "club": "St. Patrick's Athletic", "is_goalkeeper": false},
+  {"display_name": "Darragh Power", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Daryl Horgan", "club": "Dundalk", "is_goalkeeper": false},
+  {"display_name": "David Hurley", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Dawson Devoy", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Dayle Rooney", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Dean McMenamy", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Declan McDaid", "club": "Dundalk", "is_goalkeeper": false},
+  {"display_name": "Douglas James-Taylor", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Dylan Watts", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Edward Beach", "club": "Shelbourne", "is_goalkeeper": true},
+  {"display_name": "Edward McCarthy", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Edward McGinty", "club": "Shamrock Rovers", "is_goalkeeper": true},
+  {"display_name": "Edwin Agbaje", "club": "Drogheda United", "is_goalkeeper": false},
+  {"display_name": "Ellis Chapman", "club": "Derry City", "is_goalkeeper": false},
+  {"display_name": "Enda Minogue", "club": "Dundalk", "is_goalkeeper": true},
+  {"display_name": "Enda Stevens", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Eoin Kenny", "club": "Dundalk", "is_goalkeeper": false},
+  {"display_name": "Ethan O'Brien", "club": "Drogheda United", "is_goalkeeper": false},
+  {"display_name": "Evan Caffrey", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Evan McLaughlin", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Evan Watts", "club": "Galway United", "is_goalkeeper": true},
+  {"display_name": "Francely Lomboto", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Frantz Pierrot", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Fynn Talley", "club": "Drogheda United", "is_goalkeeper": true},
+  {"display_name": "Gareth McElroy", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Gbemi Arubi", "club": "Dundalk", "is_goalkeeper": false},
+  {"display_name": "Gianfranco Facchineri", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Graham Burke", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Harry Groome", "club": "Dundalk", "is_goalkeeper": false},
+  {"display_name": "Harry Vaughan", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Harry Wood", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Harvey Warren", "club": "Dundalk", "is_goalkeeper": false},
+  {"display_name": "Hayden Cann", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Hugo Pires da Cunha", "club": "Galway United", "is_goalkeeper": true},
+  {"display_name": "Jack Byrne", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Jack Henry-Francis", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Jack Shorrock", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Jago Godden", "club": "Drogheda United", "is_goalkeeper": false},
+  {"display_name": "Jake Mulraney", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "James Bolger", "club": "Drogheda United", "is_goalkeeper": false},
+  {"display_name": "James Brown", "club": "St. Patrick's Athletic", "is_goalkeeper": false},
+  {"display_name": "James Clarke", "club": "Derry City", "is_goalkeeper": false},
+  {"display_name": "James McClean", "club": "Derry City", "is_goalkeeper": false},
+  {"display_name": "James McManus", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "James Norris", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "James Olayinka", "club": "Derry City", "is_goalkeeper": false},
+  {"display_name": "Jamie Lennon", "club": "St. Patrick's Athletic", "is_goalkeeper": false},
+  {"display_name": "Jamie Stott", "club": "Derry City", "is_goalkeeper": false},
+  {"display_name": "Jason  Bucknor", "club": "Drogheda United", "is_goalkeeper": false},
+  {"display_name": "Jason McClelland", "club": "St. Patrick's Athletic", "is_goalkeeper": false},
+  {"display_name": "Jeannot Esua", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Jimmy Keohane", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "John Mahon", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "John Martin", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "John Mc Govern", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "John O'Sullivan", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "John Ross Wilson", "club": "Dundalk", "is_goalkeeper": false},
+  {"display_name": "Jonathan Lunney", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Jordan  Houston", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Jordan Flores", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Jorgen  Voilas", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Joseph Anang", "club": "St. Patrick's Athletic", "is_goalkeeper": true},
+  {"display_name": "Joseph Redmond", "club": "St. Patrick's Athletic", "is_goalkeeper": false},
+  {"display_name": "Joshua Thomas", "club": "Derry City", "is_goalkeeper": false},
+  {"display_name": "Kacper Chorazka", "club": "Bohemians", "is_goalkeeper": true},
+  {"display_name": "Kameron Ledwidge", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Keith Buckley", "club": "Dundalk", "is_goalkeeper": false},
+  {"display_name": "Kerr McInroy", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Kevin Dos Santos", "club": "Derry City", "is_goalkeeper": false},
+  {"display_name": "Kevin Long", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Kian Leavy", "club": "St. Patrick's Athletic", "is_goalkeeper": false},
+  {"display_name": "Killian Brouder", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Kris Twardek", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Lee Devitt", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Lee Grace", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Leigh Kavanagh", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Leo Burney", "club": "Drogheda United", "is_goalkeeper": false},
+  {"display_name": "Liam Boyce", "club": "Derry City", "is_goalkeeper": false},
+  {"display_name": "Luke Dennison", "club": "Drogheda United", "is_goalkeeper": true},
+  {"display_name": "Luke Heeney", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Luke Turner", "club": "St. Patrick's Athletic", "is_goalkeeper": false},
+  {"display_name": "Mai Traore", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Maill Lundgren", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Mark Doyle", "club": "Drogheda United", "is_goalkeeper": false},
+  {"display_name": "Markuss Strods", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Matthew James Healy", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Matthew Wolfe", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Mayowa Animasahun", "club": "Dundalk", "is_goalkeeper": false},
+  {"display_name": "Michael Duffy", "club": "Derry City", "is_goalkeeper": false},
+  {"display_name": "Michael Noonan", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Milan Mbeng", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Niall Morahan", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Nick Twisk", "club": "Derry City", "is_goalkeeper": false},
+  {"display_name": "Noah Mawene", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Odhran Casey", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Oliver Denham", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Olunatunmise Sobowale", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Padraig Amond", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Patrick Barrett", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Patrick Hickey", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Patrick McClean", "club": "Derry City", "is_goalkeeper": false},
+  {"display_name": "Paul Girard Walters", "club": "Bohemians", "is_goalkeeper": true},
+  {"display_name": "Robert Burns", "club": "Dundalk", "is_goalkeeper": false},
+  {"display_name": "Robert Cornwall", "club": "Dundalk", "is_goalkeeper": false},
+  {"display_name": "Roberto Lopes", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Rodrigo Freitas", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Romal Palmer", "club": "St. Patrick's Athletic", "is_goalkeeper": false},
+  {"display_name": "Ronan Teahan", "club": "Dundalk", "is_goalkeeper": false},
+  {"display_name": "Ross Tierney", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Ryan Brennan", "club": "Drogheda United", "is_goalkeeper": false},
+  {"display_name": "Ryan Edmondson", "club": "St. Patrick's Athletic", "is_goalkeeper": false},
+  {"display_name": "Ryan O'Kane", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Sadou Diallo", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Sam Sargeant", "club": "Sligo Rovers", "is_goalkeeper": true},
+  {"display_name": "Sam Todd", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Samuel Bone", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Samuel Glenfield", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Sean Boyd", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Sean Gannon", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Sean Hoare", "club": "St. Patrick's Athletic", "is_goalkeeper": false},
+  {"display_name": "Sean McHale", "club": "St. Patrick's Athletic", "is_goalkeeper": false},
+  {"display_name": "Sean Stewart", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Sebastian Quirk", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Senan Mullen", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Shane Farrell", "club": "Drogheda United", "is_goalkeeper": false},
+  {"display_name": "Shane Tracey", "club": "Dundalk", "is_goalkeeper": false},
+  {"display_name": "Stephen McMullan", "club": "Waterford", "is_goalkeeper": true},
+  {"display_name": "Stephen Walsh", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Thomas Lonergan", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Thomas Oluwa", "club": "Drogheda United", "is_goalkeeper": false},
+  {"display_name": "Tom Grivosti", "club": "Dundalk", "is_goalkeeper": false},
+  {"display_name": "Trae Bailey Coyle", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Trevor Clarke", "club": "Dundalk", "is_goalkeeper": false},
+  {"display_name": "Tyreke Wilson", "club": "Dundalk", "is_goalkeeper": false},
+  {"display_name": "Victor Ozhianvuna", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Warren Davis", "club": "Drogheda United", "is_goalkeeper": false},
+  {"display_name": "Wasiri Williams", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Wessel Speel", "club": "Shelbourne", "is_goalkeeper": true},
+  {"display_name": "William Fitzgerald", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "William Jarvis", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "William Johnson", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Zachary Elbouzedi", "club": "St. Patrick's Athletic", "is_goalkeeper": false},
+  {"display_name": "Zane Myers", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Zeno Ibsen Rossi", "club": "Shelbourne", "is_goalkeeper": false},
+];
 
-const PD_PLAYERS = [{"display_name": "Edwin Agbaje", "club": "Drogheda United", "is_goalkeeper": false}, {"display_name": "Afolabi Akinyemi", "club": "Derry City", "is_goalkeeper": false}, {"display_name": "Padraig Amond", "club": "Waterford", "is_goalkeeper": false}, {"display_name": "Joseph Anang", "club": "St. Patrick's Athletic", "is_goalkeeper": true}, {"display_name": "Mayowa Animasahun", "club": "Dundalk", "is_goalkeeper": false}, {"display_name": "Gbemi Arubi", "club": "Dundalk", "is_goalkeeper": false}, {"display_name": "Conor Barr", "club": "Derry City", "is_goalkeeper": false}, {"display_name": "Connor Barratt", "club": "Galway United", "is_goalkeeper": false}, {"display_name": "Patrick Barrett", "club": "Shelbourne", "is_goalkeeper": false}, {"display_name": "Edward Beach", "club": "Derry City", "is_goalkeeper": true}, {"display_name": "Aaron Bolger", "club": "Galway United", "is_goalkeeper": false}, {"display_name": "James Bolger", "club": "Drogheda United", "is_goalkeeper": false}, {"display_name": "Samuel Bone", "club": "Shelbourne", "is_goalkeeper": false}, {"display_name": "Sean Boyd", "club": "Shelbourne", "is_goalkeeper": false}, {"display_name": "Adam Brennan", "club": "Shamrock Rovers", "is_goalkeeper": false}, {"display_name": "Ryan Brennan", "club": "Drogheda United", "is_goalkeeper": false}, {"display_name": "Killian Brouder", "club": "Galway United", "is_goalkeeper": false}, {"display_name": "James Brown", "club": "St. Patrick's Athletic", "is_goalkeeper": false}, {"display_name": "Keith Buckley", "club": "Dundalk", "is_goalkeeper": false}, {"display_name": "Graham Burke", "club": "Shamrock Rovers", "is_goalkeeper": false}, {"display_name": "Leo Burney", "club": "Drogheda United", "is_goalkeeper": false}, {"display_name": "Robert Burns", "club": "Dundalk", "is_goalkeeper": false}, {"display_name": "Cian Byrne", "club": "Bohemians", "is_goalkeeper": false}, {"display_name": "Jack Byrne", "club": "Shamrock Rovers", "is_goalkeeper": false}, {"display_name": "Evan Caffrey", "club": "Shelbourne", "is_goalkeeper": false}, {"display_name": "Hayden Cann", "club": "Waterford", "is_goalkeeper": false}, {"display_name": "Conor Carty", "club": "Waterford", "is_goalkeeper": false}, {"display_name": "Kacper Chorazka", "club": "Bohemians", "is_goalkeeper": true}, {"display_name": "James Clarke", "club": "Derry City", "is_goalkeeper": false}, {"display_name": "Alistair Coote", "club": "Shelbourne", "is_goalkeeper": false}, {"display_name": "Robert Cornwall", "club": "Dundalk", "is_goalkeeper": false}, {"display_name": "Barry Cotter", "club": "Derry City", "is_goalkeeper": false}, {"display_name": "Trae Bailey Coyle", "club": "Waterford", "is_goalkeeper": false}, {"display_name": "Barry Crowe Baggley", "club": "St. Patrick's Athletic", "is_goalkeeper": false}, {"display_name": "Warren Davis", "club": "Drogheda United", "is_goalkeeper": false}, {"display_name": "Oliver Denham", "club": "Sligo Rovers", "is_goalkeeper": false}, {"display_name": "Luke Dennison", "club": "Drogheda United", "is_goalkeeper": true}, {"display_name": "Aodh Dervin", "club": "Dundalk", "is_goalkeeper": false}, {"display_name": "Lee Devitt", "club": "Galway United", "is_goalkeeper": false}, {"display_name": "Dawson Devoy", "club": "Bohemians", "is_goalkeeper": false}, {"display_name": "Sadou Diallo", "club": "Bohemians", "is_goalkeeper": false}, {"display_name": "Arlo Doherty", "club": "Waterford", "is_goalkeeper": true}, {"display_name": "Ben Doherty", "club": "Derry City", "is_goalkeeper": false}, {"display_name": "Mark Doyle", "club": "Drogheda United", "is_goalkeeper": false}, {"display_name": "Michael Duffy", "club": "Derry City", "is_goalkeeper": false}, {"display_name": "Ryan Edmondson", "club": "St. Patrick's Athletic", "is_goalkeeper": false}, {"display_name": "Zachary Elbouzedi", "club": "St. Patrick's Athletic", "is_goalkeeper": false}, {"display_name": "Jeannot Esua", "club": "Sligo Rovers", "is_goalkeeper": false}, {"display_name": "Gianfranco Facchineri", "club": "Galway United", "is_goalkeeper": false}, {"display_name": "Shane Farrell", "club": "Drogheda United", "is_goalkeeper": false}, {"display_name": "William Fitzgerald", "club": "Sligo Rovers", "is_goalkeeper": false}, {"display_name": "Brandon Fleming", "club": "Derry City", "is_goalkeeper": false}, {"display_name": "Jordan Flores", "club": "Bohemians", "is_goalkeeper": false}, {"display_name": "Christopher Forrester", "club": "St. Patrick's Athletic", "is_goalkeeper": false}, {"display_name": "Sean Gannon", "club": "Shelbourne", "is_goalkeeper": false}, {"display_name": "Samuel Glenfield", "club": "Waterford", "is_goalkeeper": false}, {"display_name": "Jago Godden", "club": "Drogheda United", "is_goalkeeper": false}, {"display_name": "Lee Grace", "club": "Shamrock Rovers", "is_goalkeeper": false}, {"display_name": "Daniel Grant", "club": "Shamrock Rovers", "is_goalkeeper": false}, {"display_name": "Aaron Greene", "club": "Shamrock Rovers", "is_goalkeeper": false}, {"display_name": "Tom Grivosti", "club": "St. Patrick's Athletic", "is_goalkeeper": false}, {"display_name": "Harry Groome", "club": "Dundalk", "is_goalkeeper": false}, {"display_name": "Matthew Healy", "club": "Shamrock Rovers", "is_goalkeeper": false}, {"display_name": "Luke Heeney", "club": "Waterford", "is_goalkeeper": false}, {"display_name": "Jack Henry-Francis", "club": "Shelbourne", "is_goalkeeper": false}, {"display_name": "Patrick Hickey", "club": "Bohemians", "is_goalkeeper": false}, {"display_name": "Sean Hoare", "club": "St. Patrick's Athletic", "is_goalkeeper": false}, {"display_name": "Daryl Horgan", "club": "Dundalk", "is_goalkeeper": false}, {"display_name": "David Hurley", "club": "Galway United", "is_goalkeeper": false}, {"display_name": "Zeno Ibsen Rossi", "club": "Shelbourne", "is_goalkeeper": false}, {"display_name": "Douglas James-Taylor", "club": "Bohemians", "is_goalkeeper": false}, {"display_name": "William Jarvis", "club": "Shelbourne", "is_goalkeeper": false}, {"display_name": "Conor Kane", "club": "Drogheda United", "is_goalkeeper": false}, {"display_name": "Brandon Kavanagh", "club": "Drogheda United", "is_goalkeeper": false}, {"display_name": "Cian Kavanagh", "club": "Sligo Rovers", "is_goalkeeper": false}, {"display_name": "Conor Kearns", "club": "Dundalk", "is_goalkeeper": true}, {"display_name": "Conor Keeley", "club": "Drogheda United", "is_goalkeeper": false}, {"display_name": "Daniel Kelly", "club": "Shelbourne", "is_goalkeeper": false}, {"display_name": "Eoin Kenny", "club": "Dundalk", "is_goalkeeper": false}, {"display_name": "Jimmy Keohane", "club": "Galway United", "is_goalkeeper": false}, {"display_name": "Kian Leavy", "club": "St. Patrick's Athletic", "is_goalkeeper": false}, {"display_name": "Kameron Ledwidge", "club": "Shelbourne", "is_goalkeeper": false}, {"display_name": "Jamie Lennon", "club": "St. Patrick's Athletic", "is_goalkeeper": false}, {"display_name": "Francely Lomboto", "club": "Galway United", "is_goalkeeper": false}, {"display_name": "Thomas Lonergan", "club": "Waterford", "is_goalkeeper": false}, {"display_name": "Kevin Long", "club": "Waterford", "is_goalkeeper": false}, {"display_name": "Roberto Lopes", "club": "Shamrock Rovers", "is_goalkeeper": false}, {"display_name": "Maill Lundgren", "club": "Shelbourne", "is_goalkeeper": false}, {"display_name": "Jonathan Lunney", "club": "Shelbourne", "is_goalkeeper": false}, {"display_name": "John Mahon", "club": "Waterford", "is_goalkeeper": false}, {"display_name": "Darragh Markey", "club": "Derry City", "is_goalkeeper": false}, {"display_name": "John Martin", "club": "Shelbourne", "is_goalkeeper": false}, {"display_name": "John Mc Govern", "club": "Shamrock Rovers", "is_goalkeeper": false}, {"display_name": "Edward McCarthy", "club": "Galway United", "is_goalkeeper": false}, {"display_name": "James McClean", "club": "Derry City", "is_goalkeeper": false}, {"display_name": "Patrick McClean", "club": "Derry City", "is_goalkeeper": false}, {"display_name": "Jason McClelland", "club": "St. Patrick's Athletic", "is_goalkeeper": false}, {"display_name": "Declan McDaid", "club": "Dundalk", "is_goalkeeper": false}, {"display_name": "Adam McDonnell", "club": "Bohemians", "is_goalkeeper": false}, {"display_name": "Gareth McElroy", "club": "Sligo Rovers", "is_goalkeeper": false}, {"display_name": "Edward McGinty", "club": "Shamrock Rovers", "is_goalkeeper": true}, {"display_name": "Sean McHale", "club": "Sligo Rovers", "is_goalkeeper": false}, {"display_name": "Carl McHugh", "club": "Sligo Rovers", "is_goalkeeper": false}, {"display_name": "Kerr McInroy", "club": "Shelbourne", "is_goalkeeper": false}, {"display_name": "Evan McLaughlin", "club": "Waterford", "is_goalkeeper": false}, {"display_name": "James McManus", "club": "Sligo Rovers", "is_goalkeeper": false}, {"display_name": "Dean McMenamy", "club": "Waterford", "is_goalkeeper": false}, {"display_name": "Stephen McMullan", "club": "Waterford", "is_goalkeeper": true}, {"display_name": "Archie Meekison", "club": "Sligo Rovers", "is_goalkeeper": false}, {"display_name": "Enda Minogue", "club": "Dundalk", "is_goalkeeper": true}, {"display_name": "Senan Mullen", "club": "Bohemians", "is_goalkeeper": false}, {"display_name": "Jake Mulraney", "club": "Shamrock Rovers", "is_goalkeeper": false}, {"display_name": "Alex Nolan", "club": "Sligo Rovers", "is_goalkeeper": false}, {"display_name": "Conan Noonan", "club": "Waterford", "is_goalkeeper": false}, {"display_name": "Michael Noonan", "club": "Shamrock Rovers", "is_goalkeeper": false}, {"display_name": "James Norris", "club": "Shelbourne", "is_goalkeeper": false}, {"display_name": "Darragh Nugent", "club": "St. Patrick's Athletic", "is_goalkeeper": false}, {"display_name": "Ethan O'Brien", "club": "Drogheda United", "is_goalkeeper": false}, {"display_name": "Ryan O'Kane", "club": "Sligo Rovers", "is_goalkeeper": false}, {"display_name": "James Olayinka", "club": "Derry City", "is_goalkeeper": false}, {"display_name": "Thomas Oluwa", "club": "Drogheda United", "is_goalkeeper": false}, {"display_name": "Adam O'Reilly", "club": "Derry City", "is_goalkeeper": false}, {"display_name": "Cory O'Sullivan", "club": "Shamrock Rovers", "is_goalkeeper": false}, {"display_name": "Victor Ozhianvuna", "club": "Shamrock Rovers", "is_goalkeeper": false}, {"display_name": "Romal Palmer", "club": "St. Patrick's Athletic", "is_goalkeeper": false}, {"display_name": "Arthur Parker", "club": "Galway United", "is_goalkeeper": false}, {"display_name": "Connor Parsons", "club": "Bohemians", "is_goalkeeper": false}, {"display_name": "Daire Patton", "club": "Sligo Rovers", "is_goalkeeper": false}, {"display_name": "Bernardo Peixoto Couto", "club": "Waterford", "is_goalkeeper": false}, {"display_name": "Darragh Power", "club": "Bohemians", "is_goalkeeper": false}, {"display_name": "Andrew Quinn", "club": "Drogheda United", "is_goalkeeper": false}, {"display_name": "Sebastian Quirk", "club": "Sligo Rovers", "is_goalkeeper": false}, {"display_name": "Joseph Redmond", "club": "St. Patrick's Athletic", "is_goalkeeper": false}, {"display_name": "Dayle Rooney", "club": "Bohemians", "is_goalkeeper": false}, {"display_name": "Sam Sargeant", "club": "Sligo Rovers", "is_goalkeeper": true}, {"display_name": "Olunatunmise Sobowale", "club": "Shamrock Rovers", "is_goalkeeper": false}, {"display_name": "Wessel Speel", "club": "Shelbourne", "is_goalkeeper": true}, {"display_name": "Enda Stevens", "club": "Shamrock Rovers", "is_goalkeeper": false}, {"display_name": "Jamie Stott", "club": "Derry City", "is_goalkeeper": false}, {"display_name": "Markuss Strods", "club": "Bohemians", "is_goalkeeper": false}, {"display_name": "Fynn Talley", "club": "Drogheda United", "is_goalkeeper": true}, {"display_name": "Ronan Teahan", "club": "Dundalk", "is_goalkeeper": false}, {"display_name": "Joshua Thomas", "club": "Derry City", "is_goalkeeper": false}, {"display_name": "Ross Tierney", "club": "Bohemians", "is_goalkeeper": false}, {"display_name": "Sam Todd", "club": "Bohemians", "is_goalkeeper": false}, {"display_name": "Mai Traore", "club": "Sligo Rovers", "is_goalkeeper": false}, {"display_name": "Luke Turner", "club": "St. Patrick's Athletic", "is_goalkeeper": false}, {"display_name": "Kris Twardek", "club": "Galway United", "is_goalkeeper": false}, {"display_name": "Harry Vaughan", "club": "Bohemians", "is_goalkeeper": false}, {"display_name": "Jorgen Voilas", "club": "Waterford", "is_goalkeeper": false}, {"display_name": "Stephen Walsh", "club": "Galway United", "is_goalkeeper": false}, {"display_name": "Harvey Warren", "club": "Dundalk", "is_goalkeeper": false}, {"display_name": "Dylan Watts", "club": "Shamrock Rovers", "is_goalkeeper": false}, {"display_name": "Evan Watts", "club": "Galway United", "is_goalkeeper": true}, {"display_name": "Colm Whelan", "club": "Bohemians", "is_goalkeeper": false}, {"display_name": "Wasiri Williams", "club": "Galway United", "is_goalkeeper": false}, {"display_name": "John Ross Wilson", "club": "Dundalk", "is_goalkeeper": false}, {"display_name": "Tyreke Wilson", "club": "Dundalk", "is_goalkeeper": false}, {"display_name": "Carl Winchester", "club": "Derry City", "is_goalkeeper": false}, {"display_name": "Matthew Wolfe", "club": "Galway United", "is_goalkeeper": false}, {"display_name": "Harry Wood", "club": "Shelbourne", "is_goalkeeper": false}];
+// ------------------------------------------------------------------
+//  MEN'S FIRST DIVISION — End-of-Season eligible list (500+ minutes)
+// ------------------------------------------------------------------
+const FD_CLUBS = [
+  "Athlone Town",
+  "Bray Wanderers",
+  "Cobh Ramblers",
+  "Cork City",
+  "Finn Harps",
+  "Kerry",
+  "Longford Town",
+  "Treaty United",
+  "UCD",
+  "Wexford",
+];
 
-// ================================================================
-//  POWER AUTOMATE WEBHOOK
-//  To capture responses to Excel in SharePoint, paste your
-//  Power Automate HTTP trigger URL below.
-//  Leave as empty string '' to disable (responses log to console only).
-// ================================================================
-// ================================================================ 
-//  VOTING CONTROL 
-//  Set VOTING_OPEN to false to close voting and show the closed page. 
-//  Set back to true to reopen voting. 
-const POWER_AUTOMATE_URL = 'https://hook.eu1.make.com/d1yvhdrsfyh9qqb8ud9d8xsoe748ln19';
+const FD_PLAYERS = [
+  {"display_name": "Aaron Connolly", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Aaron Doran", "club": "Longford Town", "is_goalkeeper": false},
+  {"display_name": "Aaron McLaughlin", "club": "Finn Harps", "is_goalkeeper": false},
+  {"display_name": "Aaron Moloney", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Adam Verdon", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Adam Wells", "club": "UCD", "is_goalkeeper": false},
+  {"display_name": "Aderinsola Abdul-Lateef Adewale", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Aime Azende Nyembo", "club": "Bray Wanderers", "is_goalkeeper": false},
+  {"display_name": "Ajibola Oluwabiyi", "club": "Bray Wanderers", "is_goalkeeper": false},
+  {"display_name": "Alain Kizenga", "club": "Bray Wanderers", "is_goalkeeper": false},
+  {"display_name": "Alex Moody", "club": "Wexford", "is_goalkeeper": true},
+  {"display_name": "Alex O'Brien", "club": "Longford Town", "is_goalkeeper": false},
+  {"display_name": "Alex-Mathis Fanle Tiego", "club": "Finn Harps", "is_goalkeeper": false},
+  {"display_name": "Andrew Stuart Trainor", "club": "Athlone Town", "is_goalkeeper": true},
+  {"display_name": "Andy Paraschiv", "club": "Longford Town", "is_goalkeeper": false},
+  {"display_name": "Anthony Adenopo", "club": "Cobh Ramblers", "is_goalkeeper": false},
+  {"display_name": "Arran Healy", "club": "Kerry", "is_goalkeeper": false},
+  {"display_name": "Ben Feeney", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Ben Mc Cormack", "club": "Bray Wanderers", "is_goalkeeper": false},
+  {"display_name": "Benjamin Fagbemi", "club": "Bray Wanderers", "is_goalkeeper": false},
+  {"display_name": "Benjamin Lynch", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Bernardo Dos Santos Monteiro", "club": "Finn Harps", "is_goalkeeper": false},
+  {"display_name": "Billy O'Neill", "club": "Bray Wanderers", "is_goalkeeper": false},
+  {"display_name": "Brendan Clarke", "club": "Athlone Town", "is_goalkeeper": true},
+  {"display_name": "Brendan Frahill", "club": "Cobh Ramblers", "is_goalkeeper": false},
+  {"display_name": "Brian Linehan", "club": "Cobh Ramblers", "is_goalkeeper": false},
+  {"display_name": "Brian McManus", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Callum Cleary", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Callum Honohan", "club": "Cobh Ramblers", "is_goalkeeper": false},
+  {"display_name": "Carl Lennox", "club": "UCD", "is_goalkeeper": false},
+  {"display_name": "Charles Akinrintayo", "club": "UCD", "is_goalkeeper": false},
+  {"display_name": "Charlie Lyons", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Cian Bargary", "club": "Kerry", "is_goalkeeper": false},
+  {"display_name": "Cian Brosnan", "club": "Kerry", "is_goalkeeper": false},
+  {"display_name": "Cian Coleman", "club": "Cobh Ramblers", "is_goalkeeper": false},
+  {"display_name": "Cian Curtis", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Cian Doyle", "club": "Bray Wanderers", "is_goalkeeper": false},
+  {"display_name": "Cian Murphy", "club": "Kerry", "is_goalkeeper": false},
+  {"display_name": "Ciaran Behan", "club": "UCD", "is_goalkeeper": false},
+  {"display_name": "Ciaron Harkin", "club": "Finn Harps", "is_goalkeeper": false},
+  {"display_name": "Cillian Murphy", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Cillian Tollett", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Cole Omorehiomwan", "club": "Longford Town", "is_goalkeeper": false},
+  {"display_name": "Colin Conroy", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Conor Brann", "club": "Cork City", "is_goalkeeper": true},
+  {"display_name": "Conor Drinan", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Conor Errity", "club": "Longford Town", "is_goalkeeper": false},
+  {"display_name": "Conor Tourish", "club": "Finn Harps", "is_goalkeeper": false},
+  {"display_name": "Corey Sheridan", "club": "Finn Harps", "is_goalkeeper": true},
+  {"display_name": "Daniel McKenna", "club": "Longford Town", "is_goalkeeper": false},
+  {"display_name": "Daniel Ricardo Manita De Lacerda", "club": "Finn Harps", "is_goalkeeper": false},
+  {"display_name": "Daniel Ring", "club": "Bray Wanderers", "is_goalkeeper": false},
+  {"display_name": "Dara Kavanagh", "club": "UCD", "is_goalkeeper": true},
+  {"display_name": "Dara McCormick", "club": "Cobh Ramblers", "is_goalkeeper": false},
+  {"display_name": "Daragh Murtagh", "club": "Longford Town", "is_goalkeeper": false},
+  {"display_name": "Darragh Coyle", "club": "Finn Harps", "is_goalkeeper": false},
+  {"display_name": "Darragh Crowley", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Darren Nwankwo", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Dean Larkin", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Dean O'Shea", "club": "Bray Wanderers", "is_goalkeeper": false},
+  {"display_name": "Dean Williams", "club": "Longford Town", "is_goalkeeper": false},
+  {"display_name": "Declan Osagie", "club": "Bray Wanderers", "is_goalkeeper": false},
+  {"display_name": "Donal O'Connor", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Dylan Connolly", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Dylan Hand", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Dylan McGlade", "club": "Cobh Ramblers", "is_goalkeeper": false},
+  {"display_name": "Eanna Clancy", "club": "UCD", "is_goalkeeper": false},
+  {"display_name": "Endri Mustali", "club": "Bray Wanderers", "is_goalkeeper": false},
+  {"display_name": "Eric Yoro", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Evan O'Connor", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Evan Osam", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Ewan Lee", "club": "Kerry", "is_goalkeeper": false},
+  {"display_name": "Fiacre Kelleher", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Finn McKenlay", "club": "Finn Harps", "is_goalkeeper": false},
+  {"display_name": "Fionn Doherty", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Fuhad Kareem", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Garry Buckley", "club": "Cobh Ramblers", "is_goalkeeper": false},
+  {"display_name": "Gavin Hodgins", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Gavin Mc Ateer", "club": "Finn Harps", "is_goalkeeper": false},
+  {"display_name": "Gideon Tetteh", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Gradi Lomboto", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Greg Bolger", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Hans Kamta Mpongo", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Harry Curtis", "club": "UCD", "is_goalkeeper": false},
+  {"display_name": "Harry Halwax", "club": "Kerry", "is_goalkeeper": true},
+  {"display_name": "Harry Nevin", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Hugh Smith", "club": "UCD", "is_goalkeeper": false},
+  {"display_name": "Idir Yacine Zerrouk", "club": "Finn Harps", "is_goalkeeper": false},
+  {"display_name": "Ifunanyachi Achara", "club": "Bray Wanderers", "is_goalkeeper": false},
+  {"display_name": "Jack Brady", "club": "Treaty United", "is_goalkeeper": true},
+  {"display_name": "Jake Doyle", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Jake Hough", "club": "Longford Town", "is_goalkeeper": false},
+  {"display_name": "James Corcoran", "club": "Bray Wanderers", "is_goalkeeper": true},
+  {"display_name": "James Crawford", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Jamie Duggan", "club": "Bray Wanderers", "is_goalkeeper": false},
+  {"display_name": "Jamie Ryan", "club": "Bray Wanderers", "is_goalkeeper": false},
+  {"display_name": "Jamie Wynne", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Jason Abbott", "club": "Cobh Ramblers", "is_goalkeeper": false},
+  {"display_name": "Jason Folarin Oyenuga", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Joel Bradley-Walsh", "club": "Finn Harps", "is_goalkeeper": false},
+  {"display_name": "John Bilili Sesay", "club": "Bray Wanderers", "is_goalkeeper": false},
+  {"display_name": "Jonas H\u00e4kkinen", "club": "Kerry", "is_goalkeeper": false},
+  {"display_name": "Jonas Stjernberg", "club": "Cobh Ramblers", "is_goalkeeper": false},
+  {"display_name": "Jonathan Kehir", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Joshua Cullen", "club": "Finn Harps", "is_goalkeeper": false},
+  {"display_name": "Joshua Fitzpatrick", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Kai O'Neill", "club": "Cobh Ramblers", "is_goalkeeper": false},
+  {"display_name": "Kaylem Harnett", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Kian Dignam", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Kian Moore", "club": "Longford Town", "is_goalkeeper": true},
+  {"display_name": "Kilian Cantwell", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Killian Cailloce", "club": "UCD", "is_goalkeeper": false},
+  {"display_name": "Kyle Foley", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Kyle O'Connor", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Kyle Tucker", "club": "Bray Wanderers", "is_goalkeeper": false},
+  {"display_name": "Liam Shuntaro Doyle", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Lorenzo Piaia Barbosa", "club": "Finn Harps", "is_goalkeeper": true},
+  {"display_name": "Louis Dignam", "club": "UCD", "is_goalkeeper": false},
+  {"display_name": "Luca Cailloce", "club": "UCD", "is_goalkeeper": false},
+  {"display_name": "Lucas Curtin", "club": "Cobh Ramblers", "is_goalkeeper": false},
+  {"display_name": "Luka Le Bervet", "club": "Cobh Ramblers", "is_goalkeeper": false},
+  {"display_name": "Luke O'Regan", "club": "UCD", "is_goalkeeper": false},
+  {"display_name": "Mark Byrne", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Mark Murphy", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Matthew Connor", "club": "Kerry", "is_goalkeeper": true},
+  {"display_name": "Matthew Murray", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Max Hutchison", "club": "Finn Harps", "is_goalkeeper": false},
+  {"display_name": "Max Murphy", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Michael McCullagh", "club": "UCD", "is_goalkeeper": false},
+  {"display_name": "Michael Raggett", "club": "UCD", "is_goalkeeper": false},
+  {"display_name": "Mikey Carroll", "club": "Cobh Ramblers", "is_goalkeeper": false},
+  {"display_name": "Mikie Rowe", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Nathan Lumingo", "club": "Finn Harps", "is_goalkeeper": false},
+  {"display_name": "Niall Brookwell", "club": "Kerry", "is_goalkeeper": false},
+  {"display_name": "Niall Holohan", "club": "UCD", "is_goalkeeper": false},
+  {"display_name": "Niall O'Keeffe", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Odhran McHugh", "club": "Finn Harps", "is_goalkeeper": false},
+  {"display_name": "Okwuy Okwute", "club": "Kerry", "is_goalkeeper": false},
+  {"display_name": "Oran Brogan", "club": "Finn Harps", "is_goalkeeper": false},
+  {"display_name": "Oran Crowe", "club": "Cobh Ramblers", "is_goalkeeper": false},
+  {"display_name": "Osaze Irhue", "club": "Longford Town", "is_goalkeeper": false},
+  {"display_name": "Patrick Ferry", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Paul Martin", "club": "Wexford", "is_goalkeeper": true},
+  {"display_name": "Peter Grogan", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Pharrell Manuel", "club": "Longford Town", "is_goalkeeper": false},
+  {"display_name": "Prince Jordan Adeyemi", "club": "Cobh Ramblers", "is_goalkeeper": false},
+  {"display_name": "Raphael Ohin", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Reece Webb", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Rhys  Gourdie", "club": "Cobh Ramblers", "is_goalkeeper": false},
+  {"display_name": "Rhys Bartley", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Rhys Brennan", "club": "Cobh Ramblers", "is_goalkeeper": false},
+  {"display_name": "Rhys Kelly-Noonan", "club": "Cobh Ramblers", "is_goalkeeper": false},
+  {"display_name": "Rian Hogan", "club": "Bray Wanderers", "is_goalkeeper": true},
+  {"display_name": "Richard Ferizaj", "club": "Bray Wanderers", "is_goalkeeper": false},
+  {"display_name": "Richkov Boevi", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Robbie Lynch", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Robert Lyons", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Robert McCourt", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Ronan Manning", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Ronan Mansfield", "club": "Cobh Ramblers", "is_goalkeeper": false},
+  {"display_name": "Rory Feely", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Ruairi Keating", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Ryan Butler", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Ryan Kelliher", "club": "Kerry", "is_goalkeeper": false},
+  {"display_name": "Ryan Kelly", "club": "Bray Wanderers", "is_goalkeeper": false},
+  {"display_name": "Ryan Perez", "club": "Kerry", "is_goalkeeper": false},
+  {"display_name": "Ryan Ritchie", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Samuel Aladesanusi", "club": "Kerry", "is_goalkeeper": false},
+  {"display_name": "Sean Brennan", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Sean Maguire", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Sean McGrath", "club": "Kerry", "is_goalkeeper": false},
+  {"display_name": "Sean Moore", "club": "Longford Town", "is_goalkeeper": false},
+  {"display_name": "Sean Murphy", "club": "UCD", "is_goalkeeper": false},
+  {"display_name": "Sean O'Connell", "club": "Kerry", "is_goalkeeper": false},
+  {"display_name": "Shane Griffin", "club": "Cobh Ramblers", "is_goalkeeper": false},
+  {"display_name": "Shane Griffin", "club": "Cobh Ramblers", "is_goalkeeper": false},
+  {"display_name": "Shaunie Bradley", "club": "Finn Harps", "is_goalkeeper": false},
+  {"display_name": "Stefan Ugbesia", "club": "Longford Town", "is_goalkeeper": false},
+  {"display_name": "Stephen Mohan", "club": "UCD", "is_goalkeeper": false},
+  {"display_name": "Steve Perrault Tokam Membou", "club": "Finn Harps", "is_goalkeeper": false},
+  {"display_name": "Steven Healy", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Sultan Adenekan", "club": "Longford Town", "is_goalkeeper": false},
+  {"display_name": "Taylor McCarthy", "club": "Longford Town", "is_goalkeeper": false},
+  {"display_name": "Temiloluwa Ajibola", "club": "Finn Harps", "is_goalkeeper": false},
+  {"display_name": "Thomas Considine", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Thomas Morley", "club": "UCD", "is_goalkeeper": false},
+  {"display_name": "Timothy Martin", "club": "Cobh Ramblers", "is_goalkeeper": true},
+  {"display_name": "Tony McNamee", "club": "Finn Harps", "is_goalkeeper": false},
+  {"display_name": "Tyreik Sammy", "club": "Bray Wanderers", "is_goalkeeper": false},
+  {"display_name": "Vincent Borden", "club": "Kerry", "is_goalkeeper": false},
+  {"display_name": "William Smith", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Wilson Waweru", "club": "Cobh Ramblers", "is_goalkeeper": false},
+  {"display_name": "Zayd Abada", "club": "Wexford", "is_goalkeeper": false},
+];
+
+// ------------------------------------------------------------------
+//  WOMEN'S PREMIER DIVISION — End-of-Season eligible list (500+ minutes)
+// ------------------------------------------------------------------
+const WPD_CLUBS = [
+  "Athlone Town",
+  "Bohemians",
+  "Cork City",
+  "DLR Waves",
+  "Galway United",
+  "Peamount United",
+  "Shamrock Rovers",
+  "Shelbourne",
+  "Sligo Rovers",
+  "Treaty United",
+  "Waterford",
+  "Wexford",
+];
+
+const WPD_PLAYERS = [
+  {"display_name": "Abigail Villiers-Tuthill", "club": "Peamount United", "is_goalkeeper": false},
+  {"display_name": "Aibhlinn Cotter", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Aisling Roche", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Aisling Spillane", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Alana Doherty", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Alannah McEvoy", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Alex Devoy", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Alex Kavanagh", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Alexis Strickland", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Alice Lillie", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Amanda Budden", "club": "Shamrock Rovers", "is_goalkeeper": true},
+  {"display_name": "Amanda McQuillan", "club": "Galway United", "is_goalkeeper": true},
+  {"display_name": "Amber Cosgrove", "club": "DLR Waves", "is_goalkeeper": false},
+  {"display_name": "Amber Cullen", "club": "DLR Waves", "is_goalkeeper": false},
+  {"display_name": "Anna Carson", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Anna Gornela", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Anna McDaniel", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Aoibhe Brennan", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Aoibheann Clancy", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Aoibheann Costello", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Aoibhin Donnelly", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Aoife Brophy", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Aoife Fennell", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Aoife Kelly", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Aoife O'Connor", "club": "Peamount United", "is_goalkeeper": false},
+  {"display_name": "Ava Hallinan", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Ava Mullins", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Bonnie McKiernan", "club": "Sligo Rovers", "is_goalkeeper": true},
+  {"display_name": "Brianne Severns", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Caoimhe Carley", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Cara Griffin", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Cara Jordan", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Cara King", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Carlie Sinnott", "club": "Peamount United", "is_goalkeeper": false},
+  {"display_name": "Caroline Penner", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Ceola Bergin", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Chloe Atkinson", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Chloe McCarthy", "club": "DLR Waves", "is_goalkeeper": false},
+  {"display_name": "Christie Gray", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Ciara Breslin", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Ciara Maher", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Ciara O'Driscoll", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Ciara O'Neill", "club": "Peamount United", "is_goalkeeper": false},
+  {"display_name": "Ciara Rossiter", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Cliodhna Donnelly", "club": "DLR Waves", "is_goalkeeper": false},
+  {"display_name": "Clodagh Fitzgerald", "club": "Cork City", "is_goalkeeper": true},
+  {"display_name": "Courtney Chochol", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Courtney Maguire", "club": "Athlone Town", "is_goalkeeper": true},
+  {"display_name": "Dana Scheriff", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Danielle Burke", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Della Cowper-Gray", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Della Maria Doherty", "club": "Peamount United", "is_goalkeeper": false},
+  {"display_name": "Devon Olive", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Eleanor Ryan Doyle", "club": "Peamount United", "is_goalkeeper": false},
+  {"display_name": "Ella Kelly", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Ella Raimondi", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Ellen Goggin", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Ellen Molloy", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Ellie O'Brien", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Emily Corbet", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Emma Bucci", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Emma Doherty", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Emma Duffy", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Emma Hansberry", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Emma Hurley", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Emma Mooney", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Emma Oliphant", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Erica Turner", "club": "Shamrock Rovers", "is_goalkeeper": true},
+  {"display_name": "Eva Mangan", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Eve Conheady", "club": "DLR Waves", "is_goalkeeper": false},
+  {"display_name": "Eve Dossen", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Fiana Bradley", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Fiona Doherty", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Fiona Donnelly", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Freya de Mange", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Grace Flanagan", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Grace McInerney", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Gracie Dunaway", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Hailey Twomey", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Halle Harcourt", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Hannah Healy", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Hannah O'Brien", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Hannah Waesch", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Heidi Mackin", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Holly O'Hagan", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Isabel Ryan", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Isabel Walsh", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Isabella Beletic", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Isabella Marie Flocchini", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Jade Rehberger", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Jaime Thompson", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Jessica Gargan", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Jessica Gleeson", "club": "DLR Waves", "is_goalkeeper": false},
+  {"display_name": "Jessica Lawler", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Kate Jones", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Katherine Hess", "club": "Treaty United", "is_goalkeeper": true},
+  {"display_name": "Katherine Malone", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Katie Lawlee", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Katie Lovely", "club": "Peamount United", "is_goalkeeper": false},
+  {"display_name": "Katie McCarn", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Katie O'Reilly", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Kayla Gon\u00e7alves", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Kayleigh Shine", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Kaytlin Conroy", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Keelin Dodd", "club": "DLR Waves", "is_goalkeeper": false},
+  {"display_name": "Keeva Keenan", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Keira Burke", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Kelis Barton", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Kellie Brennan", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Kelsey McQuillan", "club": "DLR Waves", "is_goalkeeper": false},
+  {"display_name": "Kerryanne Brown", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Kyah Coady", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Laura O'Neill", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Lauren Dwyer", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Lauren Egbuloniu", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Lauren Homan", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Lauren Walsh", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Lauryn McCabe", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Lauryn O'Callaghan", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Leah Donnelly", "club": "DLR Waves", "is_goalkeeper": false},
+  {"display_name": "Leah Doyle", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Leah Kelly", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Leah McGrath", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Leah O'Donoghue", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Leah O'Leary Callender", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Leiagh Glennon", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Lisa Murphy", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Lucy Jayne Grant", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Lucy O Rourke", "club": "Peamount United", "is_goalkeeper": false},
+  {"display_name": "Madison Gibson", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Madison Mcguane", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Maeve Williams", "club": "Waterford", "is_goalkeeper": true},
+  {"display_name": "Maeve Wollmer", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Margaret Pierce", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Maria Matthaiou", "club": "Athlone Town", "is_goalkeeper": true},
+  {"display_name": "Maria O'Sullivan", "club": "Wexford", "is_goalkeeper": true},
+  {"display_name": "Maria Reynolds", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Mary Ella Karolak", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Mary Phillips", "club": "Peamount United", "is_goalkeeper": false},
+  {"display_name": "Meabh Russell", "club": "Peamount United", "is_goalkeeper": false},
+  {"display_name": "Meadhbh Doherty", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Megan Smyth-Lynch", "club": "Wexford", "is_goalkeeper": false},
+  {"display_name": "Melissa O'Kane", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Mia Lenihan", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Mia McGonnell", "club": "Peamount United", "is_goalkeeper": false},
+  {"display_name": "Mia Murtagh", "club": "Peamount United", "is_goalkeeper": false},
+  {"display_name": "Michelle Doonan", "club": "DLR Waves", "is_goalkeeper": false},
+  {"display_name": "Michelle Muddiman", "club": "DLR Waves", "is_goalkeeper": false},
+  {"display_name": "Millie Daly", "club": "Peamount United", "is_goalkeeper": false},
+  {"display_name": "Mya Sanchez", "club": "Shelbourne", "is_goalkeeper": true},
+  {"display_name": "Nadine Seward", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Natalie McNally", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Neema Nyangasi", "club": "DLR Waves", "is_goalkeeper": false},
+  {"display_name": "Nia Hannon", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Niamh Cotter", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Niamh Farrelly", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Noelle Murray", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Olivia Damico", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Olivia Rush", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Olivia Shannon", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Paula Mc Grory", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Pearl Slattery", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Phoebe Hampson", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Rachael Kelly", "club": "Bohemians", "is_goalkeeper": true},
+  {"display_name": "Rachel Doyle", "club": "DLR Waves", "is_goalkeeper": false},
+  {"display_name": "Rebecca Watkins", "club": "Shelbourne", "is_goalkeeper": false},
+  {"display_name": "Remini Tillotson", "club": "Galway United", "is_goalkeeper": false},
+  {"display_name": "Roisin McGovern", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Roisin Molloy", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Rugile Auskalnyte", "club": "DLR Waves", "is_goalkeeper": true},
+  {"display_name": "Sabrina Hillyer", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Sadhbh Doyle", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Sarah McKevitt", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Sarah Power", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Sarah Rice", "club": "Treaty United", "is_goalkeeper": false},
+  {"display_name": "Savannah Kane", "club": "Bohemians", "is_goalkeeper": false},
+  {"display_name": "Shauna Brennan", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Shaunagh McCarthy", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Siun Murdiff", "club": "DLR Waves", "is_goalkeeper": false},
+  {"display_name": "Sofia Casaubon Stovold", "club": "Athlone Town", "is_goalkeeper": false},
+  {"display_name": "Sophie Byrne", "club": "Peamount United", "is_goalkeeper": false},
+  {"display_name": "Sorcha Melia", "club": "Peamount United", "is_goalkeeper": false},
+  {"display_name": "Stephanie Dumevi", "club": "Waterford", "is_goalkeeper": false},
+  {"display_name": "Summer Lawless", "club": "Peamount United", "is_goalkeeper": true},
+  {"display_name": "Sydney Stephens", "club": "Sligo Rovers", "is_goalkeeper": false},
+  {"display_name": "Therese Kinnevey", "club": "Shamrock Rovers", "is_goalkeeper": false},
+  {"display_name": "Una Foyle", "club": "Cork City", "is_goalkeeper": true},
+  {"display_name": "Yuna Go", "club": "Cork City", "is_goalkeeper": false},
+  {"display_name": "Zoe Finnerty", "club": "Cork City", "is_goalkeeper": false},
+];
 
 // ================================================================
 //  APP STATE
+
+// ── U21 Player Pools (Born on or after 2005-01-01) ──────────────────────────
+// PD U21: 21 players | FD U21: 76 players | WPD U21: 71 players
+// Men's combined pool (PD+FD, unique by person_id): 97 players
+const PD_U21 = [
+  {"display_name": "Adam Brennan", "club": "Shamrock Rovers"},
+  {"display_name": "Arthur Parker", "club": "Galway United"},
+  {"display_name": "Cian Dillon", "club": "Dundalk"},
+  {"display_name": "Conor Barr", "club": "Derry City"},
+  {"display_name": "Cory O'Sullivan", "club": "Shamrock Rovers"},
+  {"display_name": "Daire Patton", "club": "Sligo Rovers"},
+  {"display_name": "Eoin Kenny", "club": "Dundalk"},
+  {"display_name": "Jack Shorrock", "club": "Sligo Rovers"},
+  {"display_name": "James McManus", "club": "Sligo Rovers"},
+  {"display_name": "John O'Sullivan", "club": "Shamrock Rovers"},
+  {"display_name": "Markuss Strods", "club": "Bohemians"},
+  {"display_name": "Michael Noonan", "club": "Shamrock Rovers"},
+  {"display_name": "Noah Mawene", "club": "Waterford"},
+  {"display_name": "Samuel Glenfield", "club": "Waterford"},
+  {"display_name": "Sean McHale", "club": "St. Patrick's Athletic"},
+  {"display_name": "Senan Mullen", "club": "Bohemians"},
+  {"display_name": "Shane Tracey", "club": "Dundalk"},
+  {"display_name": "Victor Ozhianvuna", "club": "Shamrock Rovers"},
+  {"display_name": "Warren Davis", "club": "Drogheda United"},
+  {"display_name": "William Johnson", "club": "Waterford"},
+  {"display_name": "Zane Myers", "club": "Bohemians"}
+];
+const FD_U21 = [
+  {"display_name": "Aaron McLaughlin", "club": "Finn Harps"},
+  {"display_name": "Aaron Moloney", "club": "Athlone Town"},
+  {"display_name": "Aderinsola Abdul-Lateef Adewale", "club": "Athlone Town"},
+  {"display_name": "Aime Azende Nyembo", "club": "Bray Wanderers"},
+  {"display_name": "Ajibola Oluwabiyi", "club": "Bray Wanderers"},
+  {"display_name": "Alain Kizenga", "club": "Bray Wanderers"},
+  {"display_name": "Andrew Stuart Trainor", "club": "Athlone Town"},
+  {"display_name": "Andy Paraschiv", "club": "Longford Town"},
+  {"display_name": "Arran Healy", "club": "Kerry"},
+  {"display_name": "Benjamin Fagbemi", "club": "Bray Wanderers"},
+  {"display_name": "Billy O'Neill", "club": "Bray Wanderers"},
+  {"display_name": "Brian Linehan", "club": "Cobh Ramblers"},
+  {"display_name": "Callum Honohan", "club": "Cobh Ramblers"},
+  {"display_name": "Charles Akinrintayo", "club": "UCD"},
+  {"display_name": "Cian Doyle", "club": "Bray Wanderers"},
+  {"display_name": "Cillian Murphy", "club": "Cork City"},
+  {"display_name": "Cillian Tollett", "club": "Athlone Town"},
+  {"display_name": "Conor Errity", "club": "Longford Town"},
+  {"display_name": "Corey Sheridan", "club": "Finn Harps"},
+  {"display_name": "Daniel Ring", "club": "Bray Wanderers"},
+  {"display_name": "Dara Kavanagh", "club": "UCD"},
+  {"display_name": "Dara McCormick", "club": "Cobh Ramblers"},
+  {"display_name": "Daragh Murtagh", "club": "Longford Town"},
+  {"display_name": "Darragh Coyle", "club": "Finn Harps"},
+  {"display_name": "Darren Nwankwo", "club": "Treaty United"},
+  {"display_name": "Declan Osagie", "club": "Bray Wanderers"},
+  {"display_name": "Donal O'Connor", "club": "Cork City"},
+  {"display_name": "Endri Mustali", "club": "Bray Wanderers"},
+  {"display_name": "Finn McKenlay", "club": "Finn Harps"},
+  {"display_name": "Fuhad Kareem", "club": "Treaty United"},
+  {"display_name": "Gavin Hodgins", "club": "Wexford"},
+  {"display_name": "Gavin Mc Ateer", "club": "Finn Harps"},
+  {"display_name": "Gideon Tetteh", "club": "Wexford"},
+  {"display_name": "Hugh Smith", "club": "UCD"},
+  {"display_name": "Jake Doyle", "club": "Wexford"},
+  {"display_name": "Jake Hough", "club": "Longford Town"},
+  {"display_name": "James Crawford", "club": "Athlone Town"},
+  {"display_name": "Jamie Ryan", "club": "Bray Wanderers"},
+  {"display_name": "Jason Folarin Oyenuga", "club": "Treaty United"},
+  {"display_name": "John Bilili Sesay", "club": "Bray Wanderers"},
+  {"display_name": "Jonathan Kehir", "club": "Athlone Town"},
+  {"display_name": "Joshua Cullen", "club": "Finn Harps"},
+  {"display_name": "Joshua Fitzpatrick", "club": "Cork City"},
+  {"display_name": "Kai O'Neill", "club": "Cobh Ramblers"},
+  {"display_name": "Kaylem Harnett", "club": "Wexford"},
+  {"display_name": "Kian Dignam", "club": "Wexford"},
+  {"display_name": "Killian Cailloce", "club": "UCD"},
+  {"display_name": "Kyle Foley", "club": "Treaty United"},
+  {"display_name": "Luca Cailloce", "club": "UCD"},
+  {"display_name": "Lucas Curtin", "club": "Cobh Ramblers"},
+  {"display_name": "Luke O'Regan", "club": "UCD"},
+  {"display_name": "Matthew Murray", "club": "Cork City"},
+  {"display_name": "Mikey Carroll", "club": "Cobh Ramblers"},
+  {"display_name": "Niall Holohan", "club": "UCD"},
+  {"display_name": "Odhran McHugh", "club": "Finn Harps"},
+  {"display_name": "Peter Grogan", "club": "Athlone Town"},
+  {"display_name": "Pharrell Manuel", "club": "Longford Town"},
+  {"display_name": "Rhys Bartley", "club": "Wexford"},
+  {"display_name": "Rhys Brennan", "club": "Cobh Ramblers"},
+  {"display_name": "Rhys Kelly-Noonan", "club": "Cobh Ramblers"},
+  {"display_name": "Rian Hogan", "club": "Bray Wanderers"},
+  {"display_name": "Richard Ferizaj", "club": "Bray Wanderers"},
+  {"display_name": "Robbie Lynch", "club": "Treaty United"},
+  {"display_name": "Ronan Mansfield", "club": "Cobh Ramblers"},
+  {"display_name": "Ryan Butler", "club": "Wexford"},
+  {"display_name": "Ryan Kelly", "club": "Bray Wanderers"},
+  {"display_name": "Ryan Perez", "club": "Kerry"},
+  {"display_name": "Ryan Ritchie", "club": "Wexford"},
+  {"display_name": "Sean Moore", "club": "Longford Town"},
+  {"display_name": "Sean Murphy", "club": "UCD"},
+  {"display_name": "Shaunie Bradley", "club": "Finn Harps"},
+  {"display_name": "Stephen Mohan", "club": "UCD"},
+  {"display_name": "Taylor McCarthy", "club": "Longford Town"},
+  {"display_name": "Thomas Morley", "club": "UCD"},
+  {"display_name": "Tyreik Sammy", "club": "Bray Wanderers"},
+  {"display_name": "William Smith", "club": "Athlone Town"}
+];
+const WPD_U21 = [
+  {"display_name": "Aibhlinn Cotter", "club": "Treaty United"},
+  {"display_name": "Aisling Roche", "club": "Wexford"},
+  {"display_name": "Alex Devoy", "club": "Bohemians"},
+  {"display_name": "Alice Lillie", "club": "Sligo Rovers"},
+  {"display_name": "Amber Cullen", "club": "DLR Waves"},
+  {"display_name": "Anna McDaniel", "club": "Sligo Rovers"},
+  {"display_name": "Aoibhe Brennan", "club": "Bohemians"},
+  {"display_name": "Aoife Fennell", "club": "Bohemians"},
+  {"display_name": "Aoife Kelly", "club": "Shelbourne"},
+  {"display_name": "Aoife O'Connor", "club": "Peamount United"},
+  {"display_name": "Ava Hallinan", "club": "Sligo Rovers"},
+  {"display_name": "Ava Mullins", "club": "Galway United"},
+  {"display_name": "Caoimhe Carley", "club": "Waterford"},
+  {"display_name": "Cara King", "club": "Sligo Rovers"},
+  {"display_name": "Carlie Sinnott", "club": "Peamount United"},
+  {"display_name": "Ceola Bergin", "club": "Galway United"},
+  {"display_name": "Chloe Atkinson", "club": "Waterford"},
+  {"display_name": "Ciara Breslin", "club": "Treaty United"},
+  {"display_name": "Ciara O'Driscoll", "club": "Cork City"},
+  {"display_name": "Ciara O'Neill", "club": "Peamount United"},
+  {"display_name": "Clodagh Fitzgerald", "club": "Cork City"},
+  {"display_name": "Della Cowper-Gray", "club": "Shamrock Rovers"},
+  {"display_name": "Ella Kelly", "club": "Shamrock Rovers"},
+  {"display_name": "Ellen Goggin", "club": "Treaty United"},
+  {"display_name": "Ellie O'Brien", "club": "Cork City"},
+  {"display_name": "Emma Duffy", "club": "Sligo Rovers"},
+  {"display_name": "Emma Hurley", "club": "Cork City"},
+  {"display_name": "Emma Mooney", "club": "Athlone Town"},
+  {"display_name": "Eve Dossen", "club": "Galway United"},
+  {"display_name": "Fiana Bradley", "club": "Waterford"},
+  {"display_name": "Grace Flanagan", "club": "Cork City"},
+  {"display_name": "Grace McInerney", "club": "Treaty United"},
+  {"display_name": "Hailey Twomey", "club": "Shamrock Rovers"},
+  {"display_name": "Halle Harcourt", "club": "Shelbourne"},
+  {"display_name": "Hannah Healy", "club": "Bohemians"},
+  {"display_name": "Hannah O'Brien", "club": "Bohemians"},
+  {"display_name": "Heidi Mackin", "club": "Cork City"},
+  {"display_name": "Holly O'Hagan", "club": "Cork City"},
+  {"display_name": "Isabel Ryan", "club": "Athlone Town"},
+  {"display_name": "Isabel Walsh", "club": "Waterford"},
+  {"display_name": "Kate Jones", "club": "Treaty United"},
+  {"display_name": "Katie Lawlee", "club": "Treaty United"},
+  {"display_name": "Katie McCarn", "club": "Shelbourne"},
+  {"display_name": "Katie O'Reilly", "club": "Shamrock Rovers"},
+  {"display_name": "Kaytlin Conroy", "club": "Waterford"},
+  {"display_name": "Keelin Dodd", "club": "DLR Waves"},
+  {"display_name": "Keira Burke", "club": "Waterford"},
+  {"display_name": "Kelsey McQuillan", "club": "DLR Waves"},
+  {"display_name": "Lauryn McCabe", "club": "Bohemians"},
+  {"display_name": "Leah McGrath", "club": "Wexford"},
+  {"display_name": "Leah O'Leary Callender", "club": "Cork City"},
+  {"display_name": "Leiagh Glennon", "club": "Bohemians"},
+  {"display_name": "Lucy O Rourke", "club": "Peamount United"},
+  {"display_name": "Madison Mcguane", "club": "Treaty United"},
+  {"display_name": "Maeve Wollmer", "club": "Shelbourne"},
+  {"display_name": "Mary Phillips", "club": "Peamount United"},
+  {"display_name": "Meabh Russell", "club": "Peamount United"},
+  {"display_name": "Meadhbh Doherty", "club": "Waterford"},
+  {"display_name": "Mia McGonnell", "club": "Peamount United"},
+  {"display_name": "Mia Murtagh", "club": "Peamount United"},
+  {"display_name": "Michelle Muddiman", "club": "DLR Waves"},
+  {"display_name": "Millie Daly", "club": "Peamount United"},
+  {"display_name": "Nia Hannon", "club": "Shelbourne"},
+  {"display_name": "Niamh Cotter", "club": "Galway United"},
+  {"display_name": "Olivia Shannon", "club": "Waterford"},
+  {"display_name": "Savannah Kane", "club": "Bohemians"},
+  {"display_name": "Sophie Byrne", "club": "Peamount United"},
+  {"display_name": "Sorcha Melia", "club": "Peamount United"},
+  {"display_name": "Stephanie Dumevi", "club": "Waterford"},
+  {"display_name": "Summer Lawless", "club": "Peamount United"},
+  {"display_name": "Zoe Finnerty", "club": "Cork City"}
+];
+const MENS_U21 = [
+  {"display_name": "Aaron McLaughlin", "club": "Finn Harps"},
+  {"display_name": "Aaron Moloney", "club": "Athlone Town"},
+  {"display_name": "Adam Brennan", "club": "Shamrock Rovers"},
+  {"display_name": "Aderinsola Abdul-Lateef Adewale", "club": "Athlone Town"},
+  {"display_name": "Aime Azende Nyembo", "club": "Bray Wanderers"},
+  {"display_name": "Ajibola Oluwabiyi", "club": "Bray Wanderers"},
+  {"display_name": "Alain Kizenga", "club": "Bray Wanderers"},
+  {"display_name": "Andrew Stuart Trainor", "club": "Athlone Town"},
+  {"display_name": "Andy Paraschiv", "club": "Longford Town"},
+  {"display_name": "Arran Healy", "club": "Kerry"},
+  {"display_name": "Arthur Parker", "club": "Galway United"},
+  {"display_name": "Benjamin Fagbemi", "club": "Bray Wanderers"},
+  {"display_name": "Billy O'Neill", "club": "Bray Wanderers"},
+  {"display_name": "Brian Linehan", "club": "Cobh Ramblers"},
+  {"display_name": "Callum Honohan", "club": "Cobh Ramblers"},
+  {"display_name": "Charles Akinrintayo", "club": "UCD"},
+  {"display_name": "Cian Dillon", "club": "Dundalk"},
+  {"display_name": "Cian Doyle", "club": "Bray Wanderers"},
+  {"display_name": "Cillian Murphy", "club": "Cork City"},
+  {"display_name": "Cillian Tollett", "club": "Athlone Town"},
+  {"display_name": "Conor Barr", "club": "Derry City"},
+  {"display_name": "Conor Errity", "club": "Longford Town"},
+  {"display_name": "Corey Sheridan", "club": "Finn Harps"},
+  {"display_name": "Cory O'Sullivan", "club": "Shamrock Rovers"},
+  {"display_name": "Daire Patton", "club": "Sligo Rovers"},
+  {"display_name": "Daniel Ring", "club": "Bray Wanderers"},
+  {"display_name": "Dara Kavanagh", "club": "UCD"},
+  {"display_name": "Dara McCormick", "club": "Cobh Ramblers"},
+  {"display_name": "Daragh Murtagh", "club": "Longford Town"},
+  {"display_name": "Darragh Coyle", "club": "Finn Harps"},
+  {"display_name": "Darren Nwankwo", "club": "Treaty United"},
+  {"display_name": "Declan Osagie", "club": "Bray Wanderers"},
+  {"display_name": "Donal O'Connor", "club": "Cork City"},
+  {"display_name": "Endri Mustali", "club": "Bray Wanderers"},
+  {"display_name": "Eoin Kenny", "club": "Dundalk"},
+  {"display_name": "Finn McKenlay", "club": "Finn Harps"},
+  {"display_name": "Fuhad Kareem", "club": "Treaty United"},
+  {"display_name": "Gavin Hodgins", "club": "Wexford"},
+  {"display_name": "Gavin Mc Ateer", "club": "Finn Harps"},
+  {"display_name": "Gideon Tetteh", "club": "Wexford"},
+  {"display_name": "Hugh Smith", "club": "UCD"},
+  {"display_name": "Jack Shorrock", "club": "Sligo Rovers"},
+  {"display_name": "Jake Doyle", "club": "Wexford"},
+  {"display_name": "Jake Hough", "club": "Longford Town"},
+  {"display_name": "James Crawford", "club": "Athlone Town"},
+  {"display_name": "James McManus", "club": "Sligo Rovers"},
+  {"display_name": "Jamie Ryan", "club": "Bray Wanderers"},
+  {"display_name": "Jason Folarin Oyenuga", "club": "Treaty United"},
+  {"display_name": "John Bilili Sesay", "club": "Bray Wanderers"},
+  {"display_name": "John O'Sullivan", "club": "Shamrock Rovers"},
+  {"display_name": "Jonathan Kehir", "club": "Athlone Town"},
+  {"display_name": "Joshua Cullen", "club": "Finn Harps"},
+  {"display_name": "Joshua Fitzpatrick", "club": "Cork City"},
+  {"display_name": "Kai O'Neill", "club": "Cobh Ramblers"},
+  {"display_name": "Kaylem Harnett", "club": "Wexford"},
+  {"display_name": "Kian Dignam", "club": "Wexford"},
+  {"display_name": "Killian Cailloce", "club": "UCD"},
+  {"display_name": "Kyle Foley", "club": "Treaty United"},
+  {"display_name": "Luca Cailloce", "club": "UCD"},
+  {"display_name": "Lucas Curtin", "club": "Cobh Ramblers"},
+  {"display_name": "Luke O'Regan", "club": "UCD"},
+  {"display_name": "Markuss Strods", "club": "Bohemians"},
+  {"display_name": "Matthew Murray", "club": "Cork City"},
+  {"display_name": "Michael Noonan", "club": "Shamrock Rovers"},
+  {"display_name": "Mikey Carroll", "club": "Cobh Ramblers"},
+  {"display_name": "Niall Holohan", "club": "UCD"},
+  {"display_name": "Noah Mawene", "club": "Waterford"},
+  {"display_name": "Odhran McHugh", "club": "Finn Harps"},
+  {"display_name": "Peter Grogan", "club": "Athlone Town"},
+  {"display_name": "Pharrell Manuel", "club": "Longford Town"},
+  {"display_name": "Rhys Bartley", "club": "Wexford"},
+  {"display_name": "Rhys Brennan", "club": "Cobh Ramblers"},
+  {"display_name": "Rhys Kelly-Noonan", "club": "Cobh Ramblers"},
+  {"display_name": "Rian Hogan", "club": "Bray Wanderers"},
+  {"display_name": "Richard Ferizaj", "club": "Bray Wanderers"},
+  {"display_name": "Robbie Lynch", "club": "Treaty United"},
+  {"display_name": "Ronan Mansfield", "club": "Cobh Ramblers"},
+  {"display_name": "Ryan Butler", "club": "Wexford"},
+  {"display_name": "Ryan Kelly", "club": "Bray Wanderers"},
+  {"display_name": "Ryan Perez", "club": "Kerry"},
+  {"display_name": "Ryan Ritchie", "club": "Wexford"},
+  {"display_name": "Samuel Glenfield", "club": "Waterford"},
+  {"display_name": "Sean McHale", "club": "St. Patrick's Athletic"},
+  {"display_name": "Sean Moore", "club": "Longford Town"},
+  {"display_name": "Sean Murphy", "club": "UCD"},
+  {"display_name": "Senan Mullen", "club": "Bohemians"},
+  {"display_name": "Shane Tracey", "club": "Dundalk"},
+  {"display_name": "Shaunie Bradley", "club": "Finn Harps"},
+  {"display_name": "Stephen Mohan", "club": "UCD"},
+  {"display_name": "Taylor McCarthy", "club": "Longford Town"},
+  {"display_name": "Thomas Morley", "club": "UCD"},
+  {"display_name": "Tyreik Sammy", "club": "Bray Wanderers"},
+  {"display_name": "Victor Ozhianvuna", "club": "Shamrock Rovers"},
+  {"display_name": "Warren Davis", "club": "Drogheda United"},
+  {"display_name": "William Johnson", "club": "Waterford"},
+  {"display_name": "William Smith", "club": "Athlone Town"},
+  {"display_name": "Zane Myers", "club": "Bohemians"}
+];
+
 // ================================================================
 const PLAYER_DATA = {
+  premier_division: { players: PD_PLAYERS, clubs: PD_CLUBS },
   first_division:   { players: FD_PLAYERS, clubs: FD_CLUBS },
-  premier_division: { players: PD_PLAYERS, clubs: PD_CLUBS }
+  womens_division:  { players: WPD_PLAYERS, clubs: WPD_CLUBS }
 };
 
 let state = {
@@ -630,15 +1621,23 @@ function allSlotKeys() {
 //  NAVIGATION
 // ================================================================
 function updateProgress(step) {
-  const pct = Math.round(((step - 1) / 5) * 100);
+  // Map step to numeric position: 1,2,3,4,4b→5,5→6,6→done
+  const stepNum = step === '4b' ? 5 : (typeof step === 'number' && step >= 5 ? step + 1 : step);
+  const pct = Math.round(((stepNum - 1) / 6) * 100);
   document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressLabel').textContent = `Step ${step} of 5`;
+  const label = step === '4b' ? 'Step 5 of 6' : `Step ${Math.min(stepNum,6)} of 6`;
+  document.getElementById('progressLabel').textContent = label;
 }
 
 function goStep(n) {
-  if (n > state.currentStep && !validateStep(state.currentStep)) return;
+  const stepOrder = [1,2,3,4,'4b',5];
+  const curIdx = stepOrder.indexOf(state.currentStep);
+  const nextIdx = stepOrder.indexOf(n);
+  const isForward = nextIdx > curIdx;
+  if (isForward && !validateStep(state.currentStep)) return;
   if (n === 3) buildVotingUI();
   if (n === 4) buildReview();
+  if (n === '4b') initAwardsStep();
   document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
   const target = n === 'success' ? 'stepSuccess' : `step${n}`;
   document.getElementById(target).classList.add('active');
@@ -671,6 +1670,7 @@ function validateStep(step) {
     return true;
   }
   if (step === 4) return true;
+  if (step === '4b') return validateAwards();
   if (step === 5) return validateSurvey();
   return true;
 }
@@ -680,6 +1680,153 @@ function validateSurvey() {
   ['education','lastEdu','bizSchool','contract'].forEach(name => {
     if (!getRadio(name)) { showErr(name, true); ok = false; } else showErr(name, false);
   });
+  return ok;
+}
+
+
+// ================================================================
+//  AWARDS STEP (4b)
+// ================================================================
+
+// Referee lists — placeholders until confirmed
+const REFEREES_PD = [
+  '— To Be Confirmed —'
+];
+const REFEREES_FD = [
+  '— To Be Confirmed —'
+];
+const REFEREES_WPD = [
+  '— To Be Confirmed —'
+];
+
+// International Women's Player nominees — placeholder until confirmed
+const INTL_WOMEN_PLAYERS = [
+  '— To Be Confirmed —'
+];
+
+function initAwardsStep() {
+  const div = state.division; // 'premier' | 'first' | 'womens'
+  const voterClub = state.voterClub;
+  const isWomens = div === 'womens';
+
+  // Show/hide overseas vs international section
+  document.getElementById('overseas_men_section').style.display  = isWomens ? 'none' : '';
+  document.getElementById('intl_women_section').style.display    = isWomens ? '' : 'none';
+
+  // Referee dropdown
+  const refSel = document.getElementById('referee_award');
+  const refs = div === 'premier' ? REFEREES_PD : div === 'first' ? REFEREES_FD : REFEREES_WPD;
+  refSel.innerHTML = '<option value="">— Select Referee —</option>';
+  refs.forEach(r => { const o = document.createElement('option'); o.value = o.textContent = r; refSel.appendChild(o); });
+
+  // International Women's dropdown
+  if (isWomens) {
+    const iwSel = document.getElementById('intl_women_player');
+    iwSel.innerHTML = '<option value="">— Select Player —</option>';
+    INTL_WOMEN_PLAYERS.forEach(p => { const o = document.createElement('option'); o.value = o.textContent = p; iwSel.appendChild(o); });
+  }
+
+  // Player of the Year: build club list from full player pool, exclude voter club
+  buildPotyClubDropdown();
+
+  // Young Player of the Year: build club list from U21 pool
+  buildYpotyClubDropdown();
+
+  // Pool note
+  const poolNote = document.getElementById('ypoty_pool_note');
+  if (isWomens) {
+    poolNote.textContent = "Eligible players: Women's Premier Division U21 pool.";
+  } else {
+    poolNote.textContent = "Eligible players: Combined Men's Premier Division and First Division U21 pool.";
+  }
+}
+
+function getFullPlayers() {
+  const div = state.division;
+  const key = div === 'premier' ? 'premier_division' : div === 'first' ? 'first_division' : 'womens_division';
+  return PLAYER_DATA[key].players;
+}
+
+function getU21Players() {
+  const div = state.division;
+  if (div === 'womens') return WPD_U21;
+  // Men's: combined PD+FD pool
+  return MENS_U21;
+}
+
+function buildPotyClubDropdown() {
+  const players = getFullPlayers();
+  const voterClub = state.voterClub;
+  // Unique clubs excluding voter club
+  const clubs = [...new Set(players.filter(p => p.club !== voterClub).map(p => p.club))].sort();
+  const sel = document.getElementById('poty_club');
+  sel.innerHTML = '<option value="">— Select Club —</option>';
+  clubs.forEach(c => { const o = document.createElement('option'); o.value = o.textContent = c; sel.appendChild(o); });
+  document.getElementById('poty_player').innerHTML = '<option value="">— Select Player —</option>';
+  document.getElementById('poty_player').disabled = true;
+}
+
+function onPotyClubChange() {
+  const club = document.getElementById('poty_club').value;
+  const players = getFullPlayers().filter(p => p.club === club && p.club !== state.voterClub);
+  const sel = document.getElementById('poty_player');
+  sel.innerHTML = '<option value="">— Select Player —</option>';
+  players.sort(bySurname).forEach(p => {
+    const o = document.createElement('option'); o.value = p.display_name; o.textContent = p.display_name; sel.appendChild(o);
+  });
+  sel.disabled = !club;
+}
+
+function buildYpotyClubDropdown() {
+  const players = getU21Players();
+  const voterClub = state.voterClub;
+  const clubs = [...new Set(players.filter(p => p.club !== voterClub).map(p => p.club))].sort();
+  const sel = document.getElementById('ypoty_club');
+  sel.innerHTML = '<option value="">— Select Club —</option>';
+  clubs.forEach(c => { const o = document.createElement('option'); o.value = o.textContent = c; sel.appendChild(o); });
+  document.getElementById('ypoty_player').innerHTML = '<option value="">— Select Player —</option>';
+  document.getElementById('ypoty_player').disabled = true;
+}
+
+function onYpotyClubChange() {
+  const club = document.getElementById('ypoty_club').value;
+  const voterClub = state.voterClub;
+  const players = getU21Players().filter(p => p.club === club && p.club !== voterClub);
+  const sel = document.getElementById('ypoty_player');
+  sel.innerHTML = '<option value="">— Select Player —</option>';
+  players.sort(bySurname).forEach(p => {
+    const o = document.createElement('option'); o.value = p.display_name; o.textContent = p.display_name; sel.appendChild(o);
+  });
+  sel.disabled = !club;
+}
+
+function onTransferListChange(val) {
+  document.getElementById('transfer_details').style.display = val === 'Yes' ? 'block' : 'none';
+}
+
+// Sort by surname (last word of display_name)
+function bySurname(a, b) {
+  const surnameOf = n => { const parts = n.display_name.trim().split(/\s+/); return parts[parts.length - 1].toLowerCase(); };
+  return surnameOf(a).localeCompare(surnameOf(b));
+}
+
+
+function validateAwards() {
+  let ok = true;
+  // Player of the Year
+  const poty = document.getElementById('poty_player').value;
+  showErr('poty', !poty); if (!poty) ok = false;
+  // Young Player of the Year
+  const ypoty = document.getElementById('ypoty_player').value;
+  showErr('ypoty', !ypoty); if (!ypoty) ok = false;
+  // Referee
+  const ref = document.getElementById('referee_award').value;
+  showErr('referee', !ref); if (!ref) ok = false;
+  // International Women's (only for WPD)
+  if (state.division === 'womens') {
+    const iw = document.getElementById('intl_women_player').value;
+    showErr('intl_women', !iw); if (!iw) ok = false;
+  }
   return ok;
 }
 
@@ -699,8 +1846,11 @@ function selectDivision(div) {
   state.division = div; state.voterClub = null; state.votes = {};
   document.getElementById('divPremier').classList.toggle('active', div === 'premier');
   document.getElementById('divFirst').classList.toggle('active', div === 'first');
+  document.getElementById('divWomens').classList.toggle('active', div === 'womens');
   document.getElementById('voterClubField').style.display = 'block';
-  const clubs = div === 'premier' ? PD_CLUBS : FD_CLUBS;
+
+  const divKey = div === 'premier' ? 'premier_division' : div === 'first' ? 'first_division' : 'womens_division';
+  const clubs = PLAYER_DATA[divKey].clubs;
   const sel = document.getElementById('voterClub');
   sel.innerHTML = '<option value="">— Select your club —</option>';
   clubs.forEach(c => {
@@ -719,15 +1869,31 @@ function onVoterClubChange() {
 // ================================================================
 //  VOTING UI
 // ================================================================
+function getDivisionKey() {
+  if (state.division === 'premier') return 'premier_division';
+  if (state.division === 'first')   return 'first_division';
+  return 'womens_division';
+}
+
+function getDivisionLabel() {
+  if (state.division === 'premier') return "Men's Premier Division";
+  if (state.division === 'first')   return "Men's First Division";
+  return "Women's Premier Division";
+}
+
+function getEligibilityDate() {
+  // UPDATE this date when the official end-of-season cut-off is confirmed
+  if (state.division === 'premier') return '31/10/26';
+  if (state.division === 'first')   return '31/10/26';
+  return '31/10/26';
+}
+
 function getClubsForVoting() {
-  // All clubs in this division except the voter's own club
-  const divKey = state.division === 'premier' ? 'premier_division' : 'first_division';
-  return PLAYER_DATA[divKey].clubs.filter(c => c !== state.voterClub);
+  return PLAYER_DATA[getDivisionKey()].clubs.filter(c => c !== state.voterClub);
 }
 
 function getPlayersForClub(club, type) {
-  const divKey = state.division === 'premier' ? 'premier_division' : 'first_division';
-  return PLAYER_DATA[divKey].players.filter(p => {
+  return PLAYER_DATA[getDivisionKey()].players.filter(p => {
     if (p.club !== club) return false;
     if (type === 'goalkeeper') return p.is_goalkeeper;
     return !p.is_goalkeeper;
@@ -740,15 +1906,11 @@ function buildVotingUI() {
   const wrap = document.getElementById('votingContent');
   wrap.innerHTML = '';
 
-  /* VOTING CLOSED SCREEN */
-/* .voting-closed styles moved to inline */
-/* ELIGIBILITY NOTICE */
   const notice = document.createElement('div');
   notice.className = 'eligibility-notice';
-  notice.innerHTML = '<strong>ℹ️ Player Eligibility:</strong> Players appear on the lists on this form once they had played a minimum of 500 minutes by 31/05/26 during the 2026 League of Ireland season. Where a player does not appear, an option is available to add their name manually.';
+  notice.innerHTML = `<strong>ℹ️ Player Eligibility:</strong> Players appear on this form once they had played a minimum of 500 minutes by ${getEligibilityDate()} during the 2026 League of Ireland season. Where a player does not appear, an option is available to add their name manually.`;
   wrap.appendChild(notice);
 
-  // Club exclusion notice — shown once at the top
   const clubNotice = document.createElement('div');
   clubNotice.className = 'locked-club';
   clubNotice.style.marginBottom = '16px';
@@ -776,7 +1938,6 @@ function buildSlotCard(slotKey, label, type, headerClass, tag, idx) {
       <span class="pos-tag">${tag}</span>
     </div>
     <div class="card-body">
-      
       <div class="field-group">
         <label>1. Select Club</label>
         <select id="club_sel_${slotKey}" onchange="onClubSelect('${slotKey}', '${type}')">
@@ -802,7 +1963,6 @@ function buildSlotCard(slotKey, label, type, headerClass, tag, idx) {
     </div>`;
 
   setTimeout(() => {
-    // Populate club dropdown
     const clubSel = document.getElementById(`club_sel_${slotKey}`);
     if (!clubSel) return;
     const clubs = getClubsForVoting();
@@ -812,11 +1972,9 @@ function buildSlotCard(slotKey, label, type, headerClass, tag, idx) {
       clubSel.appendChild(opt);
     });
 
-    // Restore saved state
     const saved = state.votes[slotKey];
     if (saved) {
       if (saved.manual_name) {
-        // Manual entry — restore club select to the sentinel value and show manual field
         const manualClubOpt = document.createElement('option');
         manualClubOpt.value = '__MANUAL_CLUB__';
         manualClubOpt.textContent = '✏️ Player not listed? Enter name manually';
@@ -827,7 +1985,6 @@ function buildSlotCard(slotKey, label, type, headerClass, tag, idx) {
         document.getElementById(`manual_${slotKey}`).value = saved.manual_name;
         showBadge(slotKey, saved.display_name, 'Added manually');
       } else {
-        // List selection — restore club, populate players, restore player
         clubSel.value = saved.club;
         populatePlayerSelect(slotKey, saved.club, type, saved.display_name);
       }
@@ -842,7 +1999,6 @@ function populatePlayerSelect(slotKey, club, type, restoreValue) {
   const manualWrap = document.getElementById(`manual_wrap_${slotKey}`);
   if (!sel) return;
 
-  // Reset player dropdown
   sel.innerHTML = '<option value="">— Choose a player —</option>';
   if (manualWrap) manualWrap.style.display = 'none';
   document.getElementById(`badge_${slotKey}`).innerHTML = '';
@@ -853,7 +2009,6 @@ function populatePlayerSelect(slotKey, club, type, restoreValue) {
     return;
   }
 
-  // Show player field
   if (playerField) playerField.style.display = 'block';
 
   const players = getPlayersForClub(club, type);
@@ -870,18 +2025,14 @@ function populatePlayerSelect(slotKey, club, type, restoreValue) {
     sel.appendChild(opt);
   });
 
-  // Manual entry option at bottom of player list
   const manualOpt = document.createElement('option');
   manualOpt.value = '__MANUAL__';
   manualOpt.textContent = "✏️ Player not listed? Enter name manually";
   sel.appendChild(manualOpt);
 
-  // Restore saved player selection
   if (curVal && curVal !== '__MANUAL__') {
     sel.value = curVal;
-    if (sel.value === curVal) {
-      showBadge(slotKey, curVal, club);
-    }
+    if (sel.value === curVal) showBadge(slotKey, curVal, club);
   }
 }
 
@@ -892,17 +2043,11 @@ function onClubSelect(slotKey, type) {
   const playerField = document.getElementById(`player_field_${slotKey}`);
   const badge = document.getElementById(`badge_${slotKey}`);
 
-  // Clear any existing vote for this slot
   delete state.votes[slotKey];
   if (badge) badge.innerHTML = '';
   if (manualWrap) manualWrap.style.display = 'none';
 
-  if (!club) {
-    if (playerField) playerField.style.display = 'none';
-    return;
-  }
-
-  // Show player field and populate
+  if (!club) { if (playerField) playerField.style.display = 'none'; return; }
   if (playerField) playerField.style.display = 'block';
   populatePlayerSelect(slotKey, club, type, null);
 }
@@ -916,8 +2061,7 @@ function onPlayerSelect(slotKey) {
   const manualWrap  = document.getElementById(`manual_wrap_${slotKey}`);
   const manualInput = document.getElementById(`manual_${slotKey}`);
 
-  // Always hide manual field unless __MANUAL__ chosen
-  if (manualWrap) { manualWrap.style.display = 'none'; }
+  if (manualWrap) manualWrap.style.display = 'none';
   if (manualInput) manualInput.value = '';
 
   if (!name) {
@@ -928,12 +2072,11 @@ function onPlayerSelect(slotKey) {
     return;
   }
 
-  // Manual entry option chosen
   if (name === '__MANUAL__') {
     dup.classList.remove('visible');
     delete state.votes[slotKey];
     badge.innerHTML = '';
-    if (manualWrap) { manualWrap.style.display = 'block'; }
+    if (manualWrap) manualWrap.style.display = 'block';
     if (manualInput) manualInput.focus();
     return;
   }
@@ -960,17 +2103,12 @@ function onManualEntry(slotKey) {
   const enteredName = (manualInput?.value || '').trim();
   const clubContext = clubSel?.value && clubSel.value !== '__MANUAL_CLUB__' ? clubSel.value : 'Manual entry';
 
-  if (!enteredName) {
-    delete state.votes[slotKey];
-    badge.innerHTML = '';
-    return;
-  }
+  if (!enteredName) { delete state.votes[slotKey]; badge.innerHTML = ''; return; }
 
   const isDup = Object.entries(state.votes).some(([k,v]) => {
     if (k === slotKey) return false;
     return v.display_name.toLowerCase() === enteredName.toLowerCase();
   });
-
   if (isDup) {
     badge.innerHTML = '<div style="color:#e53e3e;font-size:13px;margin-top:6px;">⚠️ This player is already selected for another position.</div>';
     delete state.votes[slotKey];
@@ -1005,9 +2143,8 @@ function refreshAllSelects() {
 //  REVIEW
 // ================================================================
 function buildReview() {
-  const divLabel = state.division === 'premier' ? 'Premier Division' : 'First Division';
   let html = `<p style="font-size:13px;color:var(--text-light);margin-bottom:16px;">
-    Voting as: <strong>${fv('firstName')} ${fv('lastName')}</strong> · ${state.voterClub} · ${divLabel}</p>
+    Voting as: <strong>${fv('firstName')} ${fv('lastName')}</strong> · ${state.voterClub} · ${getDivisionLabel()}</p>
     <div class="summary-grid">`;
   POSITIONS.forEach(pos => {
     for (let i = 1; i <= pos.count; i++) {
@@ -1058,7 +2195,9 @@ async function submitVote() {
 
   const payload = {
     timestamp:  new Date().toISOString(),
-    division:   state.division === 'premier' ? 'Premier Division' : 'First Division',
+    // vote_type field helps identify this as end-of-season in the Excel sheet
+    vote_type:  'End-of-Season',
+    division:   getDivisionLabel(),
     voter_first_name:  fv('firstName'),
     voter_last_name:   fv('lastName'),
     voter_email:       fv('email'),
@@ -1086,22 +2225,34 @@ async function submitVote() {
     attacker_2_club:   state.votes['att2']?.club         || '',
     attacker_3:        state.votes['att3']?.display_name || '',
     attacker_3_club:   state.votes['att3']?.club         || '',
-    survey_education:       getRadio('education')     || '',
-    survey_education_other: fv('education_other'),
-    survey_last_education:  getRadio('lastEdu')       || '',
-    survey_biz_school:      getRadio('bizSchool')     || '',
+    survey_education:        getRadio('education')     || '',
+    survey_education_other:  fv('education_other'),
+    survey_last_education:   getRadio('lastEdu')       || '',
+    survey_biz_school:       getRadio('bizSchool')     || '',
     survey_biz_school_other: fv('bizSchool_other'),
-    survey_contract:        getRadio('contract')      || '',
-    survey_workforce_ready: getRadio('workforceReady')|| '',
-    survey_pfa_help:        fv('pfaHelp'),
-    survey_comments:        fv('comments'),
+    survey_contract:         getRadio('contract')      || '',
+    survey_workforce_ready:  getRadio('workforceReady')|| '',
+    survey_pfa_help:         fv('pfaHelp'),
+    survey_comments:         fv('comments'),
+    // End-of-Season Awards
+    award_poty:              document.getElementById('poty_player')?.value   || '',
+    award_poty_club:         document.getElementById('poty_club')?.value     || '',
+    award_ypoty:             document.getElementById('ypoty_player')?.value  || '',
+    award_ypoty_club:        document.getElementById('ypoty_club')?.value    || '',
+    award_referee:           document.getElementById('referee_award')?.value || '',
+    award_overseas_player:   state.division !== 'womens' ? fv('overseas_player') : '',
+    award_overseas_club:     state.division !== 'womens' ? fv('overseas_club')   : '',
+    award_intl_women:        state.division === 'womens' ? (document.getElementById('intl_women_player')?.value || '') : '',
+    transfer_list:           getRadio('transfer_list') || '',
+    transfer_position:       getRadio('transfer_list') === 'Yes' ? (document.getElementById('transfer_position')?.value || '') : '',
+    transfer_contact:        getRadio('transfer_list') === 'Yes' ? fv('transfer_contact') : '',
   };
 
-  console.log('VOTE SUBMISSION:', payload);
+  console.log('END-OF-SEASON VOTE SUBMISSION:', payload);
 
-  if (POWER_AUTOMATE_URL) {
+  if (SUBMISSION_WEBHOOK_URL && SUBMISSION_WEBHOOK_URL !== 'PASTE_END_OF_SEASON_WEBHOOK_URL_HERE') {
     try {
-      await fetch(POWER_AUTOMATE_URL, {
+      await fetch(SUBMISSION_WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -1109,6 +2260,8 @@ async function submitVote() {
     } catch (err) {
       console.error('Submission error:', err);
     }
+  } else {
+    console.warn('No submission webhook configured — vote logged to console only.');
   }
 
   goStep('success');
