@@ -308,7 +308,7 @@ const RESULTS_URL = 'https://hook.eu1.make.com/2ak7rg64qaow9ien5iu03cht1tvpfbja'
 
 // End-of-season results webhook — paste URL here once Make.com scenario is set up
 // One URL that returns ALL three EOS divisions (or leave empty to show mid-season data only)
-const EOS_RESULTS_URL = 'PASTE_EOS_RESULTS_WEBHOOK_HERE';
+const EOS_RESULTS_URL = 'https://hook.eu1.make.com/2ak7rg64qaow9ien5iu03cht1tvpfbja';
 
 // Vote weights
 const MID_SEASON_WEIGHT = 0.5;
@@ -373,7 +373,7 @@ async function fetchData() {
 
     // Fetch mid-season and end-of-season in parallel
     const fetches = [fetch(RESULTS_URL, { method: 'GET', mode: 'cors' })];
-    const hasEOS = EOS_RESULTS_URL && EOS_RESULTS_URL !== 'PASTE_EOS_RESULTS_WEBHOOK_HERE';
+    const hasEOS = EOS_RESULTS_URL && EOS_RESULTS_URL !== '';
     if (hasEOS) fetches.push(fetch(EOS_RESULTS_URL, { method: 'GET', mode: 'cors' }));
 
     const responses = await Promise.all(fetches);
