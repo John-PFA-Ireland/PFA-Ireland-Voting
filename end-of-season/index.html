@@ -2105,7 +2105,6 @@ async function submitVote() {
     award_referee:           document.getElementById('referee_award')?.value || '',
     award_overseas_player:   state.division !== 'womens' ? fv('overseas_player') : '',
     award_overseas_club:     state.division !== 'womens' ? fv('overseas_club')   : '',
-    award_intl_women:        state.division === 'womens' ? (document.getElementById('intl_women_player')?.value || '') : '',
     transfer_list:           getRadio('transfer_list') || '',
     transfer_position:       getRadio('transfer_list') === 'Yes' ? (document.getElementById('transfer_position')?.value || '') : '',
     transfer_contact:        getRadio('transfer_list') === 'Yes' ? fv('transfer_contact') : '',
