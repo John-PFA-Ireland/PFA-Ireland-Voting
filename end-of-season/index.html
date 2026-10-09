@@ -543,7 +543,7 @@ if (!VOTING_OPEN) {
 //  3. Activate the new scenario and copy its webhook URL.
 //  4. Paste that URL here, replacing the placeholder below.
 // ================================================================
-const SUBMISSION_WEBHOOK_URL = 'https://hook.eu1.make.com/6lk5wgs66oj7vrrpkx0079d6frmy8mir';
+const SUBMISSION_WEBHOOK_URL = 'https://hook.eu1.make.com/d1yvhdrsfyh9qqb8ud9d8xsoe748ln19';
 
 // ================================================================
 //  NFQ LIGHTBOX
@@ -2109,8 +2109,9 @@ async function submitVote() {
     award_ypoty:             document.getElementById('ypoty_player')?.value  || '',
     award_ypoty_club:        document.getElementById('ypoty_club')?.value    || '',
     award_referee:           document.getElementById('referee_award')?.value || '',
-    award_overseas_player:   state.division !== 'womens' ? fv('overseas_player') : '',
+    award_overseas:          state.division !== 'womens' ? fv('overseas_player') : '',
     award_overseas_club:     state.division !== 'womens' ? fv('overseas_club')   : '',
+    award_intl_women:        '',
     transfer_list:           getRadio('transfer_list') || '',
     transfer_position:       getRadio('transfer_list') === 'Yes' ? (document.getElementById('transfer_position')?.value || '') : '',
     transfer_contact:        getRadio('transfer_list') === 'Yes' ? fv('transfer_contact') : '',
@@ -2118,7 +2119,7 @@ async function submitVote() {
 
   console.log('END-OF-SEASON VOTE SUBMISSION:', payload);
 
-  if (SUBMISSION_WEBHOOK_URL && SUBMISSION_WEBHOOK_URL !== 'https://hook.eu1.make.com/6lk5wgs66oj7vrrpkx0079d6frmy8mir') {
+  if (SUBMISSION_WEBHOOK_URL) {
     try {
       await fetch(SUBMISSION_WEBHOOK_URL, {
         method: 'POST',
@@ -2132,7 +2133,7 @@ async function submitVote() {
     console.warn('No submission webhook configured — vote logged to console only.');
   }
 
-  goStep('success');
+    goStep('success');
 }
 </script>
 </body>
