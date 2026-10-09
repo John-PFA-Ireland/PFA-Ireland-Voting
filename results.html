@@ -304,7 +304,7 @@ code{background:var(--grey-light);padding:1px 6px;border-radius:4px;font-family:
 //  Leave empty to see the setup instructions.
 // ================================================================
 // Mid-season results webhook (existing)
-const RESULTS_URL = 'https://hook.eu1.make.com/2ak7rg64qaow9ien5iu03cht1tvpfbja';
+const RESULTS_URL = 'https://hook.eu1.make.com/e9o356erppnwd9t1ihyfgye5qbbqup88';
 
 // End-of-season results webhook — paste URL here once Make.com scenario is set up
 // One URL that returns ALL three EOS divisions (or leave empty to show mid-season data only)
@@ -422,10 +422,16 @@ function parseVotes(text, voteType) {
   } else {
     try {
       const parsed = JSON.parse(text);
-      if (Array.isArray(parsed)) {
-        votes = parsed.map(r => normaliseRow(r, voteType));
-      } else if (parsed && Array.isArray(parsed.votes)) {
-        votes = parsed.votes.map(r => normaliseRow(r, voteType));
+   if (Array.isArray(parsed)) {
+     votes = parsed
+       .filter(r => r && r.values !== null && r.values !== undefined)
+       .map(r => normaliseRow(r, voteType))
+       .filter(n => n.division && n.division.includes('Division'));
+   } else if (parsed && Array.isArray(parsed.votes)) {
+     votes = parsed.votes
+       .filter(r => r && r.values !== null && r.values !== undefined)
+       .map(r => normaliseRow(r, voteType))
+       .filter(n => n.division && n.division.includes('Division'));
       } else if (parsed && typeof parsed === 'object' && parsed.values) {
         votes = [normaliseRow(parsed, voteType)];
       } else if (parsed && typeof parsed === 'object') {
