@@ -99,6 +99,7 @@ header p{font-size:11px;opacity:0.65;margin-top:2px;}
 .vote-chip.mid{background:#e0e7ff;color:#1a3a5c;}
 .vote-chip.att{background:#fee2e2;color:#7d1a1a;}
 .pos-split{font-size:10px;color:var(--text-light);margin-top:2px;}
+.vote-split{font-size:11px;color:var(--text-light);margin-top:3px;font-style:italic;}
 
 /* DISPLACED PLAYERS */
 .displaced-section{padding:16px;border-top:2px dashed var(--grey-light);}
@@ -590,17 +591,19 @@ function renderDivision(prefix, data, clubs, label) {
 //  1. VOTER TURNOUT
 // ================================================================
 function buildTurnout(votes, clubs, divLabel) {
-  // Count votes and weighted totals per club
-  const counts = {};
-  const weighted = {};
-  clubs.forEach(c => { counts[c] = 0; weighted[c] = 0; });
+  // Count votes and weighted totals per club, split by type
+  const counts = {}, weighted = {}, midCounts = {}, eosCounts = {};
+  clubs.forEach(c => { counts[c] = 0; weighted[c] = 0; midCounts[c] = 0; eosCounts[c] = 0; });
   votes.forEach(v => {
     if (counts[v.voter_club] !== undefined) {
       counts[v.voter_club]++;
       weighted[v.voter_club] += (v._weight || MID_SEASON_WEIGHT);
+      if (v._voteType === 'End-of-Season') eosCounts[v.voter_club]++;
+      else midCounts[v.voter_club]++;
     }
   });
 
+  const hasEOS = votes.some(v => v._voteType === 'End-of-Season');
   const sorted = [...clubs].sort((a,b) => counts[b] - counts[a]);
   const total = votes.length;
   const totalWeighted = votes.reduce((sum, v) => sum + (v._weight || MID_SEASON_WEIGHT), 0);
@@ -620,9 +623,12 @@ function buildTurnout(votes, clubs, divLabel) {
     const wt = weighted[club].toFixed(1);
     const rankClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : 'rank-other';
     const tr = document.createElement('tr');
+    const splitHtml = hasEOS
+      ? `<div class="vote-split">Mid-Season: ${midCounts[club]} · EOS: ${eosCounts[club]}</div>`
+      : '';
     tr.innerHTML = `
       <td><span class="rank-badge ${rankClass}">${i+1}</span></td>
-      <td>${club}</td>
+      <td>${club}${splitHtml}</td>
       <td class="num">${raw}</td>
       <td class="num">${wt}</td>`;
     tbody.appendChild(tr);
@@ -655,6 +661,8 @@ function aggregatePlayers(votes) {
       {key:'attacker_3', pos:'attacker'},
     ];
 
+    const isMid = v._voteType !== 'End-of-Season';
+
     positions.forEach(({key, pos}) => {
       const name = v[key];
       const club = v[key + '_club'] || '';
@@ -663,12 +671,14 @@ function aggregatePlayers(votes) {
         players[name] = {
           name, club,
           total: 0, weighted: 0,
+          mid: 0, eos: 0,
           goalkeeper: 0, defender: 0, midfielder: 0, attacker: 0
         };
       }
       players[name][pos]++;
       players[name].total++;
       players[name].weighted += (v._weight || MID_SEASON_WEIGHT);
+      if (isMid) players[name].mid++; else players[name].eos++;
     });
   });
 
@@ -792,11 +802,16 @@ function dominantPosition(p) {
 
 function playerEntryEl(p, highlight) {
   const d = el('div','player-entry');
+  const hasBoth = p.mid > 0 && p.eos > 0;
+  const splitLine = hasBoth
+    ? `<div class="vote-split">Mid-Season: ${p.mid} · EOS: ${p.eos}</div>`
+    : (p.eos > 0 ? `<div class="vote-split">EOS: ${p.eos}</div>` : `<div class="vote-split">Mid-Season: ${p.mid}</div>`);
   d.innerHTML = `
     <div style="flex:1">
       <div class="player-name">${p.name}</div>
       <div class="player-club">${p.club}</div>
       <div class="pos-split">DEF: ${p.defender} · MID: ${p.midfielder} · ATT: ${p.attacker}${p.goalkeeper ? ' · GK: '+p.goalkeeper : ''}</div>
+      ${splitLine}
     </div>
     <div>
       <div><span class="vote-chip total">Total: ${p.total}</span> <span class="vote-chip weighted">Wtd: ${p.weighted.toFixed(1)}</span></div>
