@@ -446,15 +446,6 @@ textarea { resize: vertical; min-height: 80px; }
           <input type="text" id="overseas_club" placeholder="Club" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;box-sizing:border-box;">
         </div>
 
-        <!-- Women's: International Women's Player of the Year (dropdown) -->
-        <div class="field-group" style="margin-bottom:28px;" id="intl_women_section">
-          <label style="font-size:15px;font-weight:700;text-transform:none;letter-spacing:0;color:#1a1a1a;margin-bottom:10px;display:block;">International Women's Player of the Year</label>
-          <select id="intl_women_player" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;background:white;">
-            <option value="">— Select Player —</option>
-          </select>
-          <div class="error-msg" id="err_intl_women">Please select a player.</div>
-        </div>
-
         <!-- Transfer List -->
         <div class="field-group" style="margin-bottom:28px;padding:16px;background:#f8f9fa;border-radius:10px;border:1px solid #e8e8e5;">
           <label style="font-size:15px;font-weight:700;text-transform:none;letter-spacing:0;color:#1a1a1a;margin-bottom:10px;display:block;">Transfer List</label>
@@ -1589,11 +1580,6 @@ const REFEREES_WPD = [
   'Ryan Maher',
 ];
 
-// International Women's Player nominees — placeholder until confirmed
-const INTL_WOMEN_PLAYERS = [
-  '— To Be Confirmed —'
-];
-
 function initAwardsStep() {
   const div = state.division; // 'premier' | 'first' | 'womens'
   const voterClub = state.voterClub;
@@ -1608,13 +1594,6 @@ function initAwardsStep() {
   const refs = div === 'premier' ? REFEREES_PD : div === 'first' ? REFEREES_FD : REFEREES_WPD;
   refSel.innerHTML = '<option value="">— Select Referee —</option>';
   refs.forEach(r => { const o = document.createElement('option'); o.value = o.textContent = r; refSel.appendChild(o); });
-
-  // International Women's dropdown
-  if (isWomens) {
-    const iwSel = document.getElementById('intl_women_player');
-    iwSel.innerHTML = '<option value="">— Select Player —</option>';
-    INTL_WOMEN_PLAYERS.forEach(p => { const o = document.createElement('option'); o.value = o.textContent = p; iwSel.appendChild(o); });
-  }
 
   // Player of the Year: build club list from full player pool, exclude voter club
   buildPotyClubDropdown();
