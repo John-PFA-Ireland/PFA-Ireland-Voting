@@ -1586,8 +1586,14 @@ function initAwardsStep() {
   const isWomens = div === 'womens';
 
   // Show/hide overseas section
-  document.getElementById('overseas_men_section').style.display =
-    isWomens ? 'none' : '';
+  const overseasSection = document.getElementById('overseas_men_section');
+
+if (overseasSection) {
+  overseasSection.style.display =
+    state.division === 'premier' || state.division === 'first'
+      ? ''
+      : 'none';
+}
 
   // Referee dropdown
   const refSel = document.getElementById('referee_award');
