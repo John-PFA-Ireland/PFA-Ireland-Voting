@@ -1690,19 +1690,22 @@ function bySurname(a, b) {
 
 function validateAwards() {
   let ok = true;
+
   // Player of the Year
   const poty = document.getElementById('poty_player').value;
-  showErr('poty', !poty); if (!poty) ok = false;
+  showErr('poty', !poty);
+  if (!poty) ok = false;
+
   // Young Player of the Year
   const ypoty = document.getElementById('ypoty_player').value;
-  showErr('ypoty', !ypoty); if (!ypoty) ok = false;
+  showErr('ypoty', !ypoty);
+  if (!ypoty) ok = false;
+
   // Referee
   const ref = document.getElementById('referee_award').value;
-  showErr('referee', !ref); if (!ref) ok = false;
-award_intl_women:
-  state.division === 'womens'
-    ? (document.getElementById('intl_women_player')?.value || '')
-    : '',
+  showErr('referee', !ref);
+  if (!ref) ok = false;
+
   return ok;
 }
 
