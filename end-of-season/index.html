@@ -408,9 +408,14 @@ textarea { resize: vertical; min-height: 80px; }
           <select id="poty_club" onchange="onPotyClubChange()" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:10px;background:white;">
             <option value="">— Select Club —</option>
           </select>
-          <select id="poty_player" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;background:white;" disabled>
+          <select id="poty_player" onchange="onPotyPlayerChange()" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;background:white;" disabled>
             <option value="">— Select Player —</option>
           </select>
+          <div id="poty_manual_wrap" style="display:none;margin-top:10px;">
+            <span class="manual-entry-label">Enter Player Name Manually</span>
+            <input type="text" id="poty_manual" class="manual-entry-input" placeholder="Full player name" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;box-sizing:border-box;">
+            <div class="manual-entry-info">Please enter the player's full name as it appears in official records.</div>
+          </div>
           <div class="error-msg" id="err_poty">Please select a player.</div>
         </div>
 
@@ -422,9 +427,14 @@ textarea { resize: vertical; min-height: 80px; }
           <select id="ypoty_club" onchange="onYpotyClubChange()" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:10px;background:white;">
             <option value="">— Select Club —</option>
           </select>
-          <select id="ypoty_player" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;background:white;" disabled>
+          <select id="ypoty_player" onchange="onYpotyPlayerChange()" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;background:white;" disabled>
             <option value="">— Select Player —</option>
           </select>
+          <div id="ypoty_manual_wrap" style="display:none;margin-top:10px;">
+            <span class="manual-entry-label">Enter Player Name Manually</span>
+            <input type="text" id="ypoty_manual" class="manual-entry-input" placeholder="Full player name" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;box-sizing:border-box;">
+            <div class="manual-entry-info">Please enter the player's full name as it appears in official records.</div>
+          </div>
           <div class="error-msg" id="err_ypoty">Please select a player.</div>
         </div>
 
@@ -544,6 +554,7 @@ if (!VOTING_OPEN) {
 //  4. Paste that URL here, replacing the placeholder below.
 // ================================================================
 const SUBMISSION_WEBHOOK_URL = 'https://hook.eu1.make.com/6lk5wgs66oj7vrrpkx0079d6frmy8mir';
+const BACKUP_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxdZBgFfatiZS5bD_GO19ES82510FS2lWQ_Awk5CgrK-MTPv-hD2bi69EFZQo3u-s9CYg/exec';
 
 // ================================================================
 //  NFQ LIGHTBOX
@@ -1683,6 +1694,18 @@ function onYpotyClubChange() {
   sel.disabled = !club;
 }
 
+function onPotyPlayerChange() {
+  const val = document.getElementById('poty_player').value;
+  document.getElementById('poty_manual_wrap').style.display = val === 'Player Not Listed' ? 'block' : 'none';
+  if (val !== 'Player Not Listed') document.getElementById('poty_manual').value = '';
+}
+
+function onYpotyPlayerChange() {
+  const val = document.getElementById('ypoty_player').value;
+  document.getElementById('ypoty_manual_wrap').style.display = val === 'Player Not Listed' ? 'block' : 'none';
+  if (val !== 'Player Not Listed') document.getElementById('ypoty_manual').value = '';
+}
+
 function onTransferListChange(val) {
   document.getElementById('transfer_details').style.display = val === 'Yes' ? 'block' : 'none';
 }
@@ -1699,13 +1722,17 @@ function validateAwards() {
 
   // Player of the Year
   const poty = document.getElementById('poty_player').value;
-  showErr('poty', !poty);
-  if (!poty) ok = false;
+  const potyManual = document.getElementById('poty_manual').value.trim();
+  const potyInvalid = !poty || (poty === 'Player Not Listed' && !potyManual);
+  showErr('poty', potyInvalid);
+  if (potyInvalid) ok = false;
 
   // Young Player of the Year
   const ypoty = document.getElementById('ypoty_player').value;
-  showErr('ypoty', !ypoty);
-  if (!ypoty) ok = false;
+  const ypotyManual = document.getElementById('ypoty_manual').value.trim();
+  const ypotyInvalid = !ypoty || (ypoty === 'Player Not Listed' && !ypotyManual);
+  showErr('ypoty', ypotyInvalid);
+  if (ypotyInvalid) ok = false;
 
   // Referee
   const ref = document.getElementById('referee_award').value;
@@ -2106,9 +2133,9 @@ async function submitVote() {
     attacker_3_club:   state.votes['att3']?.club         || '',
     survey_comments:         fv('comments'),
     // End-of-Season Awards
-    award_poty:              document.getElementById('poty_player')?.value   || '',
+    award_poty:              (() => { const v = document.getElementById('poty_player')?.value || ''; return v === 'Player Not Listed' ? (document.getElementById('poty_manual')?.value.trim() || v) : v; })(),
     award_poty_club:         document.getElementById('poty_club')?.value     || '',
-    award_ypoty:             document.getElementById('ypoty_player')?.value  || '',
+    award_ypoty:             (() => { const v = document.getElementById('ypoty_player')?.value || ''; return v === 'Player Not Listed' ? (document.getElementById('ypoty_manual')?.value.trim() || v) : v; })(),
     award_ypoty_club:        document.getElementById('ypoty_club')?.value    || '',
     award_referee:           document.getElementById('referee_award')?.value || '',
     award_overseas:          state.division !== 'womens' ? fv('overseas_player') : '',
@@ -2121,19 +2148,33 @@ async function submitVote() {
 
   console.log('END-OF-SEASON VOTE SUBMISSION:', payload);
 
+  // Send to Make.com (primary) and Google Sheets (backup) in parallel
+  const submissions = [];
+
   if (SUBMISSION_WEBHOOK_URL) {
-    try {
-      await fetch(SUBMISSION_WEBHOOK_URL, {
+    submissions.push(
+      fetch(SUBMISSION_WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
-      });
-    } catch (err) {
-      console.error('Submission error:', err);
-    }
+      }).catch(err => console.error('Make webhook error:', err))
+    );
   } else {
     console.warn('No submission webhook configured — vote logged to console only.');
   }
+
+  if (BACKUP_SHEET_URL) {
+    submissions.push(
+      fetch(BACKUP_SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(err => console.error('Backup sheet error:', err))
+    );
+  }
+
+  await Promise.all(submissions);
 
     goStep('success');
 }
