@@ -699,13 +699,13 @@ function buildTOTY(votes, divLabel) {
 
   const players = aggregatePlayers(votes);
   const gks = players.filter(p => p.goalkeeper > 0 && p.defender === 0 && p.midfielder === 0 && p.attacker === 0)
-    .sort((a,b) => b.goalkeeper - a.goalkeeper || a.name.localeCompare(b.name));
+    .sort((a,b) => b.weighted - a.weighted || b.goalkeeper - a.goalkeeper || a.name.localeCompare(b.name));
   const outfield = players.filter(p => p.total > 0 && !(p.goalkeeper > 0 && p.defender === 0 && p.midfielder === 0 && p.attacker === 0))
-    .sort((a,b) => b.total - a.total || a.name.localeCompare(b.name));
+    .sort((a,b) => b.weighted - a.weighted || b.total - a.total || a.name.localeCompare(b.name));
 
-  // GK selection — pick top, include ties
-  const topGKVotes = gks.length > 0 ? gks[0].goalkeeper : 0;
-  const selectedGKs = gks.filter(p => p.goalkeeper === topGKVotes);
+  // GK selection — pick top by weighted score, include ties
+  const topGKWeighted = gks.length > 0 ? gks[0].weighted : 0;
+  const selectedGKs = gks.filter(p => p.weighted === topGKWeighted);
 
   // Outfield — take top players by total votes, assign to positions
   // Need 4 DEF, 3 MID, 3 ATT = 10 outfield
@@ -828,7 +828,7 @@ function buildTopGK(votes, divLabel) {
 
   const players = aggregatePlayers(votes);
   const gks = players.filter(p => p.goalkeeper > 0)
-    .sort((a,b) => b.goalkeeper - a.goalkeeper || a.name.localeCompare(b.name))
+    .sort((a,b) => b.weighted - a.weighted || b.goalkeeper - a.goalkeeper || a.name.localeCompare(b.name))
     .slice(0, 5);
 
   if (gks.length === 0) {
@@ -874,7 +874,7 @@ function buildTopOutfield(votes, position, title, headerClass) {
 
   const players = aggregatePlayers(votes);
   const posPlayers = players.filter(p => p[position] > 0)
-    .sort((a,b) => b.total - a.total || a.name.localeCompare(b.name))
+    .sort((a,b) => b.weighted - a.weighted || b.total - a.total || a.name.localeCompare(b.name))
     .slice(0, 10);
 
   if (posPlayers.length === 0) {
