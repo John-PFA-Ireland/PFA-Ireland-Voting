@@ -372,10 +372,29 @@ async function fetchData() {
   try {
     setStatus('Fetching latest results...', true);
 
-    // Fetch mid-season and end-of-season in parallel
+    // Fetch mid-season and end-of-season in parallel, with retry on EOS
+    async function fetchWithRetry(url, opts, retries = 3, delayMs = 2000) {
+      for (let i = 0; i < retries; i++) {
+        try {
+          const r = await fetch(url, opts);
+          if (r.ok) return r;
+          if (i < retries - 1) {
+            console.warn(`EOS fetch attempt ${i+1} failed (${r.status}), retrying in ${delayMs}ms...`);
+            await new Promise(res => setTimeout(res, delayMs * (i + 1)));
+          }
+        } catch (e) {
+          if (i < retries - 1) {
+            console.warn(`EOS fetch attempt ${i+1} error: ${e.message}, retrying in ${delayMs}ms...`);
+            await new Promise(res => setTimeout(res, delayMs * (i + 1)));
+          } else throw e;
+        }
+      }
+      return { ok: false, text: async () => '' };
+    }
+
     const fetches = [fetch(RESULTS_URL, { method: 'GET', mode: 'cors' })];
     const hasEOS = EOS_RESULTS_URL && EOS_RESULTS_URL !== '';
-    if (hasEOS) fetches.push(fetch(EOS_RESULTS_URL, { method: 'GET', mode: 'cors' }));
+    if (hasEOS) fetches.push(fetchWithRetry(EOS_RESULTS_URL, { method: 'GET', mode: 'cors' }));
 
     const responses = await Promise.all(fetches);
     const texts = await Promise.all(responses.map(r => r.ok ? r.text() : ''));
